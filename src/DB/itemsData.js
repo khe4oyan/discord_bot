@@ -17,7 +17,7 @@ const itemsData = {
 			.addNewItem(2, 100)
 			.setIsActive()
 			.setPrice(10),
-		],
+	],
 	
 	shop: [], // TODO: implement (use limit(Infinity - if unlimit))
 };
