@@ -1,5 +1,5 @@
-const sharp = require("sharp");
 const { AttachmentBuilder } = require("discord.js");
+const sharp = require("sharp");
 
 class ImgManager {
   /**

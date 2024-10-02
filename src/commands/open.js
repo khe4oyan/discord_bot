@@ -51,7 +51,7 @@ async function openBox(interaction, openBoxData, userData) {
   
   let contentData = `## ${itemData.name}\n`;
   contentData += `Качество: ${itemData.getTypeTitle()}\n`;
-  contentData += `Цена: ${itemData.sellFor}\n`;
+  contentData += `Цена: ${itemData.price}\n`;
 
   await interaction.editReply({
     content: contentData,

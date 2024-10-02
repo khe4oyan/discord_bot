@@ -86,7 +86,7 @@ class UserData {
           newInv.push(userInventory[i]);
         }
 
-        const sellFor = itemsData.items[removingItemId].sellFor;
+        const sellFor = itemsData.items[removingItemId].price;
         this.balance += sellFor;
         returningMessage += sellFor;
       } else {

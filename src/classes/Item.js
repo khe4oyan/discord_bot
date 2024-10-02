@@ -1,13 +1,10 @@
-const sharp = require("sharp");
 const path = require("path");
-const { AttachmentBuilder } = require("discord.js");
 const ImgManager = require("./ImgManager.js");
 
 class Item {
   id;
   name;
-  buyFor;
-  sellFor;
+  price;
   type;
   img;
   craft;
@@ -24,11 +21,10 @@ class Item {
     classic: "classic", // gray
   };
 
-  constructor( name, buyFor, sellFor, type, img, craft = null, expiredAt = null) {
+  constructor( name, price, type, img, craft = null, expiredAt = null) {
     this.id = Item.indexCounter++;
     this.name = name;
-    this.buyFor = buyFor;
-    this.sellFor = sellFor;
+    this.price = price;
     this.type = type;
     this.img = img;
     this.craft = craft;

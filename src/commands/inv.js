@@ -27,7 +27,7 @@ async function showInventory(interaction, inv) {
 		for (const allItemData of allItemsData) {
 			if (itemId === allItemData.id) {
 				inventoryStr += `### ${allItemData.name} (x${count})\n`;
-				inventoryStr += `-# /sell ${itemId} - чтобы продать за ${allItemData.sellFor}\n`;
+				inventoryStr += `-# /sell ${itemId} - чтобы продать за ${allItemData.price}\n`;
 				break;
 			}
 		}
