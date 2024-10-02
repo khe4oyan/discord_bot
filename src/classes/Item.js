@@ -79,38 +79,3 @@ class Item {
 }
 
 module.exports = Item;
-
-/*
-  async createAttachment() {
-    const backgroundPath = path.join(__dirname, `../assets/img/quality/${this.type}.png`);
-    const itemPath = path.join(__dirname, `../assets/img/items/${this.img}`);
-
-    // Загрузка фона
-    const background = sharp(backgroundPath);
-    const { width: bgWidth, height: bgHeight } = await background.metadata();
-
-    // Вычисление размеров предмета
-    const targetWidth = Math.floor(bgWidth * 0.8);
-    const targetHeight = Math.floor(bgHeight * 0.8);
-
-    // Изменение размера предмета
-    const resizedItemImg = await sharp(itemPath)
-      .resize({
-        width: targetWidth,
-        height: targetHeight,
-        fit: "inside",
-      })
-      .toBuffer();
-
-    // Наложение предмета на фон
-    const finalImage = await background
-      .composite([{ input: resizedItemImg, gravity: "center" }])
-      .toBuffer();
-
-    // TODO: check is temporary item or not
-
-    // Создание вложения
-    return new AttachmentBuilder(finalImage, { name: "result.png" });
-  }
-
-  */
