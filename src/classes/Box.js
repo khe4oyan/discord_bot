@@ -2,15 +2,13 @@ class Box {
   static indexCounter = 0;
   id;
   name;
-  img;
   price;
   items;
   isActive;
 
-  constructor(boxName, img) {
+  constructor(boxName) {
     this.id = Box.indexCounter++;
     this.name = boxName;
-    this.img = img;
     this.price = 0;
     this.items = new Map();
     this.isActive = false;

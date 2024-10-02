@@ -21,7 +21,7 @@ module.exports = {
 			await interaction.editReply(showedBoxes || "Ящиков пока нет");
 
 			// TODO: create image where entered image, price, id, and items(max 4 or 9)
-			// const imgPath = path.join(__dirname, `../assets/img/boxes/${itemsData.boxes[0]}`);
+
 			// await interaction.editReply({files: [imgPath]});
 		} else {
 			await interaction.reply("Нету активных ящиков");
