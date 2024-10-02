@@ -1,0 +1,22 @@
+{
+  "id": "1261334150678450229",
+  "username": "nerusnotfound",
+  "globalName": "N E R U S",
+  "balance": 1230802,
+  "registerDate": 1727866191783,
+  "guildId": "1289276610071105576",
+  "inventory": [
+    [
+      2,
+      9
+    ],
+    [
+      1,
+      11
+    ],
+    [
+      3,
+      1
+    ]
+  ]
+}
