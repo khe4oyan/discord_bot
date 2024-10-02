@@ -1,5 +1,5 @@
 const commandOptionTypes = require("../utils/commandOptionTypes.js");
-const itemsData = require("../DB/itemsData.js");
+const itemsData = require("../utils/itemsData.js");
 const UserData = require("../classes/UserData.js");
 
 module.exports = {

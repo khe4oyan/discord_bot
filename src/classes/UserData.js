@@ -1,5 +1,5 @@
 const FileManager = require("./FileManager.js");
-const itemsData = require("../DB/itemsData.js");
+const itemsData = require("../utils/itemsData.js");
 
 class UserData {
   id;

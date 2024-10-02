@@ -3,19 +3,11 @@
   "username": "nerusnotfound",
   "globalName": "N E R U S",
   "balance": 0,
-  "registerDate": 1727892019339,
+  "registerDate": 1727893251591,
   "guildId": "1289276610071105576",
   "inventory": [
     [
       1,
-      14
-    ],
-    [
-      2,
-      9
-    ],
-    [
-      3,
       2
     ]
   ]

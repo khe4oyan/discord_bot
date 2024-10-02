@@ -1,5 +1,5 @@
 const UserData = require("../classes/UserData");
-const itemsData = require("../DB/itemsData.js");
+const itemsData = require("../utils/itemsData.js");
 
 module.exports = {
 	name: 'inv',

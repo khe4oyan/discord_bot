@@ -1,4 +1,4 @@
-const itemsData = require('../DB/itemsData.js');
+const itemsData = require("../utils/itemsData.js");
 // const path = require("path");
 
 module.exports = {
