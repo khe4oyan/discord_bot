@@ -68,6 +68,32 @@ class ImgManager {
       name: "result.png",
     });
   }
+
+  // Функция для добавления текста к изображению
+  static async addTextToImage(imageBuffer, text, x, y, fontSize = 16, color = "white", textAnchor = "start" ) {
+    try {
+      const bgMetaData = await sharp(imageBuffer).metadata();
+
+      const svgText = `
+        <svg width="${bgMetaData.width}" height="${bgMetaData.height}">
+          <text x="${x}" y="${y + fontSize}" font-size="${fontSize}" font-family="Arial" fill="${color}" font-weight="bold" text-anchor="${textAnchor}" alignment-baseline="middle">
+            ${text}
+          </text>
+        </svg>
+      `;
+
+      return sharp(imageBuffer).composite([
+        {
+          input: Buffer.from(svgText),
+          top: 0, // Позиция наложения текста может быть изменена здесь
+          left: 0,
+        },
+      ]);
+    } catch (err) {
+      console.error("Ошибка при добавлении текста:", err);
+      throw err;
+    }
+  }
 }
 
 module.exports = ImgManager;

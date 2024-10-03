@@ -51,12 +51,15 @@ class Item {
     // Наложение предмета на фон
     const finalImage = await background
       .composite([{ input: resizedItemImg, gravity: "center" }])
+      .png()
       .toBuffer();  
     
     // TODO: check is temporary item or not
     
+    const textImage = await ImgManager.addTextToImage(finalImage, "Круто!", 10, 10, 20, "#fff", "start");
+
     // Создание вложения
-    return ImgManager.createAttachmentDiscord(finalImage);
+    return ImgManager.createAttachmentDiscord(textImage);
   }
 
   getTypeTitle() {
