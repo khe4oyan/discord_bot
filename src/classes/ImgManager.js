@@ -69,7 +69,18 @@ class ImgManager {
     });
   }
 
-  // Функция для добавления текста к изображению
+  /**
+   * Добавляет текст к изображению на указанных координатах.
+   *
+   * @param {Buffer} imageBuffer - Буфер изображения, к которому нужно добавить текст.
+   * @param {string} text - Текст, который будет добавлен на изображение.
+   * @param {number} x - Координата X для начала текста.
+   * @param {number} y - Координата Y для начала текста.
+   * @param {number} [fontSize=16] - Размер шрифта для текста (по умолчанию 16).
+   * @param {string} [color="white"] - Цвет текста (по умолчанию белый).
+   * @param {string} [textAnchor="start"] - Положение текста относительно координаты X (например, "start", "middle", "end").
+   * @returns {Promise<Buffer>} - Возвращает новый буфер изображения с добавленным текстом.
+   */
   static async addTextToImage(imageBuffer, text, x, y, fontSize = 16, color = "white", textAnchor = "start" ) {
     try {
       const bgMetaData = await sharp(imageBuffer).metadata();

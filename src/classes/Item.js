@@ -31,7 +31,7 @@ class Item {
     this.expiredAt = expiredAt;
   }
 
-  async createAttachment() {
+  async createImage() {
     const backgroundPath = path.join(__dirname, `../assets/img/quality/${this.type}.png`);
     const itemPath = path.join(__dirname, `../assets/img/items/${this.img}`);
 
@@ -53,13 +53,13 @@ class Item {
       .composite([{ input: resizedItemImg, gravity: "center" }])
       .png()
       .toBuffer();  
-    
-    // TODO: check is temporary item or not
-    
-    const textImage = await ImgManager.addTextToImage(finalImage, "Круто!", 10, 10, 20, "#fff", "start");
 
-    // Создание вложения
-    return ImgManager.createAttachmentDiscord(textImage);
+    return finalImage;
+  }
+
+  async createAttachment() {
+    const finalImage = await this.createImage();
+    return ImgManager.createAttachmentDiscord(finalImage);
   }
 
   getTypeTitle() {
