@@ -52,7 +52,7 @@ class Item {
     const finalImage = await background
       .composite([{ input: resizedItemImg, gravity: "center" }])
       .png()
-      .toBuffer();  
+      .toBuffer();
 
     return finalImage;
   }

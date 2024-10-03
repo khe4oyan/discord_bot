@@ -19,7 +19,7 @@ const itemsData = {
 			.setPrice(0),
 	],
 	
-	shop: [], // TODO: implement only for infinity items id
+	shop: [], // TODO: implement only for infinity buy limit items id
 };
 
 module.exports = itemsData;

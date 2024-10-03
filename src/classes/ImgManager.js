@@ -65,7 +65,7 @@ class ImgManager {
    */
   static createAttachmentDiscord(imageBuffer) {
     return new AttachmentBuilder(imageBuffer, {
-      name: "result.png",
+      name: "r.png",
     });
   }
 

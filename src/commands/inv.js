@@ -11,7 +11,7 @@ module.exports = {
 		if (user.inventory.length > 0) {
 			await showInventory(interaction, user.inventory);
 		} else {
-			await interaction.editReply('В инвентаре ничего нету');
+			await interaction.editReply('В инвентаре пусто');
 		}
 	}
 };

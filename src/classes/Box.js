@@ -1,3 +1,5 @@
+const ImgManager = require("./ImgManager.js");
+
 class Box {
   static indexCounter = 0;
   id;
@@ -55,6 +57,16 @@ class Box {
   setIsActive() {
     this.isActive = true;
     return this;
+  }
+
+  async createImage() {
+    const background = ImgManager.createImage(200, 100, "#0fa");
+    return background;
+  }
+
+  async createAttachment() {
+    const finalImage = await this.createImage();
+    return ImgManager.createAttachmentDiscord(finalImage);
   }
 }
 
