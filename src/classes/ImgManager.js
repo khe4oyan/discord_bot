@@ -93,17 +93,28 @@ class ImgManager {
         </svg>
       `;
 
-      return sharp(imageBuffer).composite([
-        {
-          input: Buffer.from(svgText),
-          top: 0, // Позиция наложения текста может быть изменена здесь
-          left: 0,
-        },
-      ]);
+      return sharp(imageBuffer)
+        .composite([
+          {
+            input: Buffer.from(svgText),
+            top: 0, // Позиция наложения текста может быть изменена здесь
+            left: 0,
+          },
+        ])
+        .png()
+        .toBuffer();
     } catch (err) {
       console.error("Ошибка при добавлении текста:", err);
       throw err;
     }
+  }
+
+  static extend(imgBuffer, sides) {
+    return sharp(imgBuffer)
+      .extend({
+        ...sides,
+        background: "#0000",
+      });
   }
 }
 

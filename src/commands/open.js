@@ -1,6 +1,8 @@
 const commandOptionTypes = require("../utils/commandOptionTypes.js");
 const itemsData = require("../utils/itemsData.js");
+const boxesData = require("../utils/boxesData.js");
 const UserData = require("../classes/UserData.js");
+const ImgManager = require("../classes/ImgManager.js");
 
 module.exports = {
   name: "open",
@@ -17,7 +19,7 @@ module.exports = {
   execute: async (interaction) => {
     await interaction.deferReply();
     const boxNumber = interaction.options.getInteger("box_id");
-    const { boxes } = itemsData;
+    const { boxes } = boxesData;
 
     for (let i = 0; i < boxes.length; ++i) {
       if (boxes[i].id === boxNumber) {
@@ -47,7 +49,8 @@ async function openBox(interaction, openBoxData, userData) {
   const itemData = itemsData.items[itemId];
   userData.addItem(itemId);
 
-  const attachment = await itemData.createAttachment();
+  const imgBuffer = ImgManager.extend(await itemData.createImage(), {top: 12, bottom: 11});
+  const attachment = ImgManager.createAttachmentDiscord(imgBuffer);
   
   let contentData = `## ${itemData.name}\n`;
   contentData += `Качество: ${itemData.getTypeTitle()}\n`;

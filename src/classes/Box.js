@@ -1,4 +1,5 @@
 const ImgManager = require("./ImgManager.js");
+const itemsData = require("../utils/itemsData.js");
 
 class Box {
   static indexCounter = 0;
@@ -66,24 +67,61 @@ class Box {
       totalChance += chance;
     }
 
+    console.log(totalChance);
+
+    const maxItemsInLine = 4;
+
     // get items id
     const itemsId = [];
+    let line = [];
     for (let [chance, itemIds] of this.items.entries()) {
       for (let i = 0; i < itemIds.length; ++i) {
         let prcentOfTotalChance = +((chance * 100) / totalChance).toFixed(2);
         if (prcentOfTotalChance > 1) {
           prcentOfTotalChance = Math.round(prcentOfTotalChance);
         }
-
-        itemsId.push([itemIds[i], prcentOfTotalChance]);
+        
+        line.push([itemsData.items[itemIds[i]], prcentOfTotalChance]);
+        if (line.length === maxItemsInLine) {
+          itemsId.push(line);
+          line = [];
+        }
       }
     }
 
-    console.log(itemsId);
+    if (line.length > 0) {
+      itemsId.push(line);
+      line = [];
+    }
     
+    // get item image width, height
+    const {width, height} = await (async () => {
+      const image = await itemsId[0][0][0].createImage();
+      return ImgManager.loadImg(image).metadata();
+    })()
     
-    const background = ImgManager.createImage(200, 100, "#0fa");
-    return background;
+
+    const gap = 10;
+    const colls = ((width * maxItemsInLine) + (maxItemsInLine * gap));
+    const rows = (height * itemsId.length + (itemsId.length * gap));
+
+    let background = await ImgManager.createImage(colls, rows, "#0000");
+    
+    for (let i = 0; i < itemsId.length; ++i) {
+      for (let j = 0; j < itemsId[i].length; ++j) {
+        const [itemData, chance] = itemsId[i][j];
+        const itemBuffer = await itemData.createImage();
+        
+        const itemResult = await ImgManager.addTextToImage(itemBuffer, `${chance}%`, width - 10, 4, 25, "#fffa", "end");
+
+        const x = j * width + j * gap;
+        const y = i * height + i * gap;
+
+        background = await ImgManager.overlayImage(background, itemResult, x, y, width, height);
+      }
+    }
+
+    return ImgManager.extend(background, {top: 14, left: 13, right: 13, bottom: 14});
   }
 
   async createAttachment() {
