@@ -67,8 +67,6 @@ class Box {
       totalChance += chance;
     }
 
-    console.log(totalChance);
-
     const maxItemsInLine = 4;
 
     // get items id
