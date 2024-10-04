@@ -1,5 +1,6 @@
-const UserData = require("../classes/UserData");
 const itemsData = require("../utils/itemsData.js");
+const UserData = require("../classes/UserData.js");
+const ImgManager = require("../classes/ImgManager.js");
 
 module.exports = {
 	name: 'inv',
@@ -17,23 +18,56 @@ module.exports = {
 };
 
 async function showInventory(interaction, inv) {
-	const allItemsData = itemsData.items;
+	const attachment = ImgManager.createAttachmentDiscord(await createInvImage(inv));
+	await interaction.editReply({ content: "## Инвентарь \n-# /sell [id] - чтобы продать предмет", files: [attachment]});
+}
 
-	let inventoryStr = "";
+async function createInvImage(inv) {
+	const itemsId = [];
+    let line = [];
+		const maxItemsInLine = inv.length > 5 ? 5 : inv.length;
 
-	for (const itemInv of inv) {
-		const [itemId, count] = itemInv;
-
-		for (const allItemData of allItemsData) {
-			if (itemId === allItemData.id) {
-				inventoryStr += `### ${allItemData.name} (x${count})\n`;
-				inventoryStr += `-# /sell ${itemId} - чтобы продать за ${allItemData.price}\n`;
-				break;
+    for (let [itemId, count] of inv) {
+			line.push([itemsData.items[itemId], count]);
+			if (line.length === maxItemsInLine) {
+				itemsId.push(line);
+				line = [];
 			}
-		}
-	}
+    }
 
-	// TODO: create image with user inventory
+    if (line.length > 0) {
+      itemsId.push(line);
+      line = [];
+    }
+    
+    // get item image width, height
+    const {width, height} = await (async () => {
+      const image = await itemsId[0][0][0].createImage();
+      return ImgManager.loadImg(image).metadata();
+    })()
+    
 
-	await interaction.editReply(inventoryStr);
+    const gap = 10;
+    const colls = ((width * maxItemsInLine) + (maxItemsInLine * gap));
+    const rows = (height * itemsId.length + (itemsId.length * gap));
+
+    let background = await ImgManager.createImage(colls, rows, "#0000");
+    
+    for (let i = 0; i < itemsId.length; ++i) {
+      for (let j = 0; j < itemsId[i].length; ++j) {
+        const [itemData, count] = itemsId[i][j];
+				
+        const itemBuffer = await itemData.createImage();
+        
+        const itemResult = await ImgManager.addTextToImage(itemBuffer, `${count}`, width - 10, height - 40, 25, "#fffa", "end");
+        const itemResult2 = await ImgManager.addTextToImage(itemResult, `ID: ${itemData.id}`, 10, 4, 23, "#fff5", "start");
+
+        const x = j * width + j * gap;
+        const y = i * height + i * gap;
+
+        background = await ImgManager.overlayImage(background, itemResult2, x, y, width, height);
+      }
+    }
+
+    return ImgManager.extend(background, {top: 14, left: 13, right: 13, bottom: 14});
 }

@@ -23,7 +23,7 @@ module.exports = {
 			}
 
 			// TODO: join all boxes
-			await interaction.editReply({files: [ImgManager.createAttachmentDiscord(boxImages[0])]});
+			await interaction.editReply({ content: "## Ящики \n/open [id] - чтобы открыть ящик", files: [ImgManager.createAttachmentDiscord(boxImages[0])]});
 		} else {
 			await interaction.reply("Нету активных ящиков");
 		}
