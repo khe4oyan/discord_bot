@@ -60,6 +60,28 @@ class Box {
   }
 
   async createImage() {
+    // calculate max chance
+    let totalChance = 0;
+    for (let chance of this.items.keys()) {
+      totalChance += chance;
+    }
+
+    // get items id
+    const itemsId = [];
+    for (let [chance, itemIds] of this.items.entries()) {
+      for (let i = 0; i < itemIds.length; ++i) {
+        let prcentOfTotalChance = +((chance * 100) / totalChance).toFixed(2);
+        if (prcentOfTotalChance > 1) {
+          prcentOfTotalChance = Math.round(prcentOfTotalChance);
+        }
+
+        itemsId.push([itemIds[i], prcentOfTotalChance]);
+      }
+    }
+
+    console.log(itemsId);
+    
+    
     const background = ImgManager.createImage(200, 100, "#0fa");
     return background;
   }
