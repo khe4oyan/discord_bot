@@ -10,7 +10,7 @@ module.exports = {
 		const user = new UserData(interaction.user, interaction.guildId);
 
 		if (user.inventory.length > 0) {
-			await showInventory(interaction, user.inventory);
+			await showInventory(interaction, user);
 		} else {
 			await interaction.editReply('В инвентаре пусто');
 		}
@@ -22,12 +22,18 @@ async function showInventory(interaction, inv) {
 	await interaction.editReply({ content: "## Инвентарь \n-# /sell [id] - чтобы продать предмет", files: [attachment]});
 }
 
-async function createInvImage(inv) {
+async function createInvImage(user) {
+  const inv = user.inventory;
 	const itemsId = [];
     let line = [];
 		const maxItemsInLine = inv.length > 5 ? 5 : inv.length;
 
     for (let [itemId, count] of inv) {
+      if (!itemsData.items[itemId]) {
+        user.removeItemImportant(itemId);
+        continue;
+      }
+      
 			line.push([itemsData.items[itemId], count]);
 			if (line.length === maxItemsInLine) {
 				itemsId.push(line);
@@ -56,16 +62,15 @@ async function createInvImage(inv) {
     for (let i = 0; i < itemsId.length; ++i) {
       for (let j = 0; j < itemsId[i].length; ++j) {
         const [itemData, count] = itemsId[i][j];
-				
-        const itemBuffer = await itemData.createImage();
         
-        const itemResult = await ImgManager.addTextToImage(itemBuffer, `${count}`, width - 10, height - 40, 25, "#fffa", "end");
-        const itemResult2 = await ImgManager.addTextToImage(itemResult, `ID: ${itemData.id}`, 10, 4, 23, "#fff5", "start");
+        let itemBuffer = await itemData.createImage();
+        itemBuffer = await ImgManager.addTextToImage(itemBuffer, `${count}`, width - 10, height - 40, 25, "#fffa", "end");
+        itemBuffer = await ImgManager.addTextToImage(itemBuffer, `ID: ${itemData.id}`, 10, 4, 23, "#fff5", "start");
 
         const x = j * width + j * gap;
         const y = i * height + i * gap;
 
-        background = await ImgManager.overlayImage(background, itemResult2, x, y, width, height);
+        background = await ImgManager.overlayImage(background, itemBuffer, x, y, width, height);
       }
     }
 

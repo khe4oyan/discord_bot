@@ -65,7 +65,7 @@ class UserData {
     
     // Проходим по инвентарю
     for (let i = 0; i < this.inventory.length; ++i) {
-      const [invItemId, count] = this.inventory[i];
+      const [invItemId] = this.inventory[i];
 
       // Если предмет уже есть в инвентаре
       if (itemId === invItemId) {
@@ -106,21 +106,24 @@ class UserData {
   removeItem(removingItemId) {
     const userInventory = this.inventory;
 
+    if (!itemsData.items[removingItemId]) {
+      return "Указан неверный ID предмета.\n-# /inv - чтобы посмотреть свой инвентарь";
+    }
+
     const newInv = [];
-    let removingItemIdIsValid = false;
     let returningMessage = "";
 
     for (let i = 0; i < userInventory.length; ++i) {
       const [itemId, count] = userInventory[i];
       if (itemId === removingItemId) {
-        removingItemIdIsValid = true;
-
+        
         if (count > 1) {
           --userInventory[i][1];
           newInv.push(userInventory[i]);
         }
 
         const sellFor = itemsData.items[removingItemId].price;
+        
         this.balance += sellFor;
         returningMessage += sellFor;
       } else {
@@ -128,15 +131,26 @@ class UserData {
       }
     }
 
-    if (removingItemIdIsValid) {
-      this.inventory = newInv;
-      this.#save();
-      returningMessage = `Предмет продан за: ${returningMessage}`;
-    } else {
-      returningMessage = "Указан неверный ID предмета.\n-# /inv - чтобы посмотреть свой инвентарь"
+    this.inventory = newInv;
+    this.#save();
+    return `Предмет продан за: ${returningMessage}`;
+  }
+
+  removeItemImportant(removingItemId) {
+    const userInventory = this.inventory;
+
+    if (itemsData.items[removingItemId]) { return; }
+
+    const newInv = [];
+    for (let i = 0; i < userInventory.length; ++i) {
+      const [itemId] = userInventory[i];
+      if (itemId !== removingItemId) {
+        newInv.push(userInventory[i]);
+      }
     }
 
-    return returningMessage;
+    this.inventory = newInv;
+    this.#save();
   }
 
   incrementBalance() {

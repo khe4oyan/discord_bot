@@ -34,7 +34,7 @@ module.exports = {
 				result = await ImgManager.overlayImage(result, boxImages[i], 0, resultData.height - metaData.height, metaData.width, metaData.height);
 			}
 
-			await interaction.editReply({ content: "## Ящики \n/open [id] - чтобы открыть ящик", files: [ImgManager.createAttachmentDiscord(result)]});
+			await interaction.editReply({ content: "## Ящики \n-# /open [id] - чтобы открыть ящик", files: [ImgManager.createAttachmentDiscord(result)]});
 		} else {
 			await interaction.reply("Нету активных ящиков");
 		}
