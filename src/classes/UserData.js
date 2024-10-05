@@ -1,4 +1,5 @@
 const FileManager = require("./FileManager.js");
+const Item = require("./Item.js");
 const itemsData = require("../data/itemsData.js");
 
 class UserData {
@@ -52,20 +53,53 @@ class UserData {
 
   addItem(itemId) {
     let isNewItem = true;
+    const qualities = Item.quality;
+
+    // Получаем ключи от всех типов качеств
+    const keys = Object.keys(qualities);
+    const qualityArrays = {};
+    // Создаем массивы для каждого качества
+    for (let i = 0; i < keys.length; ++i) {
+      qualityArrays[keys[i]] = [];
+    }
     
+    // Проходим по инвентарю
     for (let i = 0; i < this.inventory.length; ++i) {
-      const [id] = this.inventory[i];
-      if (id === itemId) {
-        ++this.inventory[i][1];
+      const [invItemId, count] = this.inventory[i];
+
+      // Если предмет уже есть в инвентаре
+      if (itemId === invItemId) {
         isNewItem = false;
-        break;
+        ++this.inventory[i][1]; // Увеличиваем количество
+      }
+
+      // Ищем предмет в данных всех предметов
+      for (let j = 0; j < itemsData.items.length; ++j) {
+        const itemData = itemsData.items[j];
+        if (invItemId === itemData.id) {
+          // Добавляем предмет в массив по его качеству
+          qualityArrays[itemData.type].push(this.inventory[i]);
+        }
       }
     }
 
+    // Если это новый предмет, добавляем его
     if (isNewItem) {
-      this.inventory.push([itemId, 1]);
+      for (let j = 0; j < itemsData.items.length; ++j) {
+        const itemData = itemsData.items[j];
+        if (itemId === itemData.id) {
+          qualityArrays[itemData.type].push([itemId, 1]); // Новый предмет с количеством 1
+        }
+      }
     }
 
+    // Очищаем инвентарь и добавляем все элементы из qualityArrays
+    this.inventory = [];
+    for (let i = 0; i < keys.length; ++i) {
+      this.inventory.push(...qualityArrays[keys[i]]);
+    }
+
+    // Сохраняем изменения
     this.#save();
   }
   
