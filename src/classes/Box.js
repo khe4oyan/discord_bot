@@ -121,10 +121,11 @@ class Box {
     }
 
     background = await ImgManager.extend(background, {top: 14, left: 13, right: 13, bottom: 14});
-    background = await ImgManager.extend(background, {top: 60}, '#FFF2');
+    background = await ImgManager.extend(background, {top: 100}, '#FFF2');
 
     const backgroundMetaData = await ImgManager.loadImg(background).metadata();
     background = await ImgManager.addTextToImage(background, this.name, 30, 0, 50, "white");
+    background = await ImgManager.addTextToImage(background, `можно открыть за: ${this.price}`, 30, 50, 35, "#fffa");
     background = await ImgManager.addTextToImage(background, `ID: ${this.id}`, backgroundMetaData.width - 30, 0, 50, "white", "end");
 
     return background;
