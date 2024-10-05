@@ -17,10 +17,6 @@ const itemsData = {
     new Item("Цветок", 5, Item.quality.classic, "flower.png"),
     new Item("Ваза", 3, Item.quality.classic, "vase.png"),
     new Item("Цветок в вазе", 20, Item.quality.special, "flower_in_vase.png", [[2, 1], [3, 1]]),
-
-    new Item("Цветок", 5000, Item.quality.ultimate, "flower.png"),
-    new Item("Цветок", 500, Item.quality.legendary, "flower.png"),
-    new Item("Цветок", 50, Item.quality.elite, "flower.png"),
   ],
 	
 	shop: [], // TODO: implement only for infinity buy limit items id
