@@ -1,5 +1,5 @@
 const ImgManager = require("../classes/ImgManager.js");
-const boxesData = require("../utils/boxesData.js");
+const boxesData = require("../data/boxesData.js");
 
 module.exports = {
 	name: 'boxes',
@@ -22,8 +22,19 @@ module.exports = {
 				return await interaction.editReply("Ящиков пока нет");
 			}
 
-			// TODO: join all boxes
-			await interaction.editReply({ content: "## Ящики \n/open [id] - чтобы открыть ящик", files: [ImgManager.createAttachmentDiscord(boxImages[0])]});
+
+			const boxExampleMeta = await ImgManager.loadImg(boxImages[0]).metadata();
+
+			let result = await ImgManager.createImage(boxExampleMeta.width, 1, "#0000");
+
+			for (let i = 0; i < boxImages.length; ++i) {
+				const metaData = await ImgManager.loadImg(boxImages[i]).metadata();
+				result = await ImgManager.extend(result, {bottom: metaData.height});
+				const resultData = await ImgManager.loadImg(result).metadata();
+				result = await ImgManager.overlayImage(result, boxImages[i], 0, resultData.height - metaData.height, metaData.width, metaData.height);
+			}
+
+			await interaction.editReply({ content: "## Ящики \n/open [id] - чтобы открыть ящик", files: [ImgManager.createAttachmentDiscord(result)]});
 		} else {
 			await interaction.reply("Нету активных ящиков");
 		}

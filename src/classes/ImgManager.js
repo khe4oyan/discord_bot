@@ -81,16 +81,26 @@ class ImgManager {
    * @param {string} [textAnchor="start"] - Положение текста относительно координаты X (например, "start", "middle", "end").
    * @returns {Promise<Buffer>} - Возвращает новый буфер изображения с добавленным текстом.
    */
-  static async addTextToImage(imageBuffer, text, x, y, fontSize = 16, color = "white", textAnchor = "start" ) {
+  static async addTextToImage(imageBuffer, text, x, y, fontSize = 16, color = "white", textAnchor = "start") {
     try {
       const bgMetaData = await sharp(imageBuffer).metadata();
 
       const svgText = `
         <svg width="${bgMetaData.width}" height="${bgMetaData.height}">
-          <text x="${x}" y="${y + fontSize}" font-size="${fontSize}" font-family="Arial" fill="${color}" font-weight="bold" text-anchor="${textAnchor}" alignment-baseline="middle">
+          <text 
+            x="${x}" 
+            y="${y + fontSize}" 
+            font-size="${fontSize}" 
+            font-family="Arial" 
+            fill="${color}" 
+            font-weight="bold" 
+            text-anchor="${textAnchor}" 
+            alignment-baseline="middle"
+          >
             ${text}
           </text>
         </svg>
+
       `;
 
       return sharp(imageBuffer)
@@ -109,12 +119,14 @@ class ImgManager {
     }
   }
 
-  static extend(imgBuffer, sides) {
+  static async extend(imgBuffer, sides, background = "#0000") {
     return sharp(imgBuffer)
       .extend({
         ...sides,
-        background: "#0000",
-      });
+        background,
+      })
+      .png()
+      .toBuffer()
   }
 }
 

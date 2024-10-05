@@ -1,4 +1,4 @@
-const itemsData = require("../utils/itemsData.js");
+const itemsData = require("../data/itemsData.js");
 const UserData = require("../classes/UserData.js");
 const ImgManager = require("../classes/ImgManager.js");
 

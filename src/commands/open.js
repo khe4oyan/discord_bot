@@ -1,6 +1,6 @@
 const commandOptionTypes = require("../utils/commandOptionTypes.js");
-const itemsData = require("../utils/itemsData.js");
-const boxesData = require("../utils/boxesData.js");
+const itemsData = require("../data/itemsData.js");
+const boxesData = require("../data/boxesData.js");
 const UserData = require("../classes/UserData.js");
 const ImgManager = require("../classes/ImgManager.js");
 
@@ -49,12 +49,13 @@ async function openBox(interaction, openBoxData, userData) {
   const itemData = itemsData.items[itemId];
   userData.addItem(itemId);
 
-  const imgBuffer = ImgManager.extend(await itemData.createImage(), {top: 12, bottom: 11});
+  const imgBuffer = await ImgManager.extend(await itemData.createImage(), {top: 12, bottom: 11});
   const attachment = ImgManager.createAttachmentDiscord(imgBuffer);
   
   let contentData = `## ${itemData.name}\n`;
   contentData += `Качество: ${itemData.getTypeTitle()}\n`;
   contentData += `Цена: ${itemData.price}\n`;
+  contentData += `ID: ${itemData.id}\n`;
 
   await interaction.editReply({
     content: contentData,

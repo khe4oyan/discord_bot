@@ -1,5 +1,6 @@
 const ImgManager = require("./ImgManager.js");
-const itemsData = require("../utils/itemsData.js");
+const itemsData = require("../data/itemsData.js");
+const Item = require("./Item.js");
 
 class Box {
   static indexCounter = 0;
@@ -110,7 +111,7 @@ class Box {
         const [itemData, chance] = itemsId[i][j];
         const itemBuffer = await itemData.createImage();
         
-        const itemResult = await ImgManager.addTextToImage(itemBuffer, `${chance}%`, width - 10, 4, 25, "#fffa", "end");
+        const itemResult = await ImgManager.addTextToImage(itemBuffer, `${chance}%`, width - 10, 4, 25, itemData.type === Item.quality.ultimate ? "#000" : "#fffa", "end");
 
         const x = j * width + j * gap;
         const y = i * height + i * gap;
@@ -119,7 +120,14 @@ class Box {
       }
     }
 
-    return ImgManager.extend(background, {top: 14, left: 13, right: 13, bottom: 14});
+    background = await ImgManager.extend(background, {top: 14, left: 13, right: 13, bottom: 14});
+    background = await ImgManager.extend(background, {top: 60}, '#FFF2');
+
+    const backgroundMetaData = await ImgManager.loadImg(background).metadata();
+    background = await ImgManager.addTextToImage(background, this.name, 30, 0, 50, "white");
+    background = await ImgManager.addTextToImage(background, `ID: ${this.id}`, backgroundMetaData.width - 30, 0, 50, "white", "end");
+
+    return background;
   }
 
   async createAttachment() {
