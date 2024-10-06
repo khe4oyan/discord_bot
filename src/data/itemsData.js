@@ -12,14 +12,20 @@ const Item = require("../classes/Item");
 
 const itemsData = {
   items: [
-		// никогда не менять последовательность предметов
-    new Item("Кейс", 300, Item.quality.special, "case.png"),
-    new Item("Цветок", 5, Item.quality.classic, "flower.png"),
-    new Item("Ваза", 3, Item.quality.classic, "vase.png"),
-    new Item("Цветок в вазе", 20, Item.quality.special, "flower_in_vase.png", [[2, 1], [3, 1]]),
+    // никогда не менять последовательность предметов
+    new Item("Деревянная ложка", 10, Item.quality.classic, "lojka.png"),
+    new Item("Пластиковый стакан", 5, Item.quality.classic, "plastic_stakan.png"),
+    new Item("Старая газета", 1, Item.quality.classic, "newsPaper.png"),
+    new Item("Глиняная кружка", 6, Item.quality.classic, "glin_stakan.png"),
+    new Item("Старая лампочка", 4, Item.quality.classic, "lamp.png"),
+    new Item("Кусок доски", 7, Item.quality.classic, "doska.png"),
+    new Item("Серебряная ложка", 50, Item.quality.rare, "lojka_serebro.png"),
+    new Item("Кожаная куртка", 60, Item.quality.rare, "kurtka.png"),
+    new Item("Позолоченный браслет", 80, Item.quality.rare, "braslet.png"),
+    new Item("Золотое кольцо", 100, Item.quality.rare, "kolco.png"),
   ],
-	
-	shop: [], // TODO: implement only for infinity buy limit items id
+
+  shop: [], // TODO: implement only for infinity buy limit items id
 };
 
 module.exports = itemsData;

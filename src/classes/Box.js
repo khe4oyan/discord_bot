@@ -9,13 +9,17 @@ class Box {
   price;
   items;
   isActive;
+  headerColor;
+  headerTitleColor;
 
-  constructor(boxName) {
+  constructor(boxName, headerColor = "#4C4E53", headerTitleColor = "#fff") {
     this.id = Box.indexCounter++;
     this.name = boxName;
     this.price = 0;
     this.items = new Map();
     this.isActive = false;
+    this.headerColor = headerColor;
+    this.headerTitleColor = headerTitleColor;
   }
 
   setPrice(price) {
@@ -121,12 +125,12 @@ class Box {
     }
 
     background = await ImgManager.extend(background, {top: 14, left: 13, right: 13, bottom: 14});
-    background = await ImgManager.extend(background, {top: 100}, '#FFF2');
+    background = await ImgManager.extend(background, {top: 100}, this.headerColor);
 
     const backgroundMetaData = await ImgManager.loadImg(background).metadata();
-    background = await ImgManager.addTextToImage(background, this.name, 30, 0, 50, "white");
-    background = await ImgManager.addTextToImage(background, `можно открыть за: ${this.price}`, 30, 50, 35, "#fffa");
-    background = await ImgManager.addTextToImage(background, `ID: ${this.id}`, backgroundMetaData.width - 30, 0, 50, "white", "end");
+    background = await ImgManager.addTextToImage(background, this.name, 30, 0, 50, this.headerTitleColor);
+    background = await ImgManager.addTextToImage(background, `можно открыть за: ${this.price}`, 30, 50, 35, this.headerTitleColor);
+    background = await ImgManager.addTextToImage(background, `ID: ${this.id}`, backgroundMetaData.width - 30, 0, 50, this.headerTitleColor, "end");
 
     return background;
   }
