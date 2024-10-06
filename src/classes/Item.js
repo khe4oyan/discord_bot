@@ -10,6 +10,7 @@ class Item {
   craft;
   expiredAt;
 
+  static crafts = [];
   static indexCounter = 0;
   static quality = {
     ultimate: "ultimate", // gold
@@ -28,6 +29,12 @@ class Item {
     this.type = type;
     this.img = img;
     this.craft = craft;
+    if (craft) {
+      Item.crafts.push({ 
+        craftableItemId: this.id, 
+        craft,
+      });
+    }
     this.expiredAt = expiredAt;
   }
 

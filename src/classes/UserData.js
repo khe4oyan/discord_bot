@@ -197,7 +197,6 @@ class UserData {
       const image = await itemsId[0][0][0].createImage();
       return ImgManager.loadImg(image).metadata();
     })()
-    
 
     const gap = 10;
     const colls = ((width * maxItemsInLine) + (maxItemsInLine * gap));

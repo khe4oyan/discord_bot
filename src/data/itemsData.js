@@ -1,13 +1,13 @@
 const Item = require("../classes/Item");
 
 /*
-ultimate: "Золотой", // gold
-legendary: "Легендарный", // red
-epic: "Эпический", // pink
-elite: "Элитный", // purple
-rare: "Редкий", // blue
-special: "Специальный", // green
-classic: "Обычный", // gray
+  ulitimate: "Золотой", // gold
+  legendary: "Легендарный", // red
+  epic: "Эпический", // pink
+  elite: "Элитный", // purple
+  rare: "Редкий", // blue
+  special: "Специальный", // green
+  classc: "Обычный", // gray
 */
 
 const itemsData = {
