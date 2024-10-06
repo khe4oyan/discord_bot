@@ -113,6 +113,7 @@ class UserData {
 
     const newInv = [];
     let returningMessage = "";
+    let itemSold = false;
 
     for (let i = 0; i < userInventory.length; ++i) {
       const [itemId, count] = userInventory[i];
@@ -127,14 +128,19 @@ class UserData {
         
         this.balance += sellFor;
         returningMessage += sellFor;
+        itemSold = true;
       } else {
         newInv.push(userInventory[i]);
       }
     }
 
-    this.inventory = newInv;
-    this.#save();
-    return `Предмет продан за: ${returningMessage}`;
+    if (itemSold) {
+      this.inventory = newInv;
+      this.#save();
+      return `Предмет продан за: ${returningMessage}`;
+    } else {
+      return "Указан неверный ID предмета.\n-# /inv - чтобы посмотреть свой инвентарь";
+    }
   }
 
   #removeItemsImportant(removingItemsId) {
