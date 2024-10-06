@@ -136,17 +136,23 @@ class UserData {
     return `Предмет продан за: ${returningMessage}`;
   }
 
-  removeItemImportant(removingItemId) {
+  removeItemsImportant(removingItemsId) {
     const userInventory = this.inventory;
-
-    if (itemsData.items[removingItemId]) { return; }
-
     const newInv = [];
+
     for (let i = 0; i < userInventory.length; ++i) {
-      const [itemId] = userInventory[i];
-      if (itemId !== removingItemId) {
-        newInv.push(userInventory[i]);
+      const [invItemId] = userInventory[i];
+      let isSaveThisIte = true;
+
+      for (let i = 0; i < removingItemsId.length; ++i) {
+        const removingItemId = removingItemsId[i];
+        if (invItemId === removingItemId) {
+          isSaveThisIte = false;
+          break;
+        }
       }
+
+      isSaveThisIte && newInv.push(userInventory[i]);
     }
 
     this.inventory = newInv;

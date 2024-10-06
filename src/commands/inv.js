@@ -28,9 +28,10 @@ async function createInvImage(user) {
     let line = [];
 		const maxItemsInLine = inv.length > 5 ? 5 : inv.length;
 
+    const removingItemsId = [];
     for (let [itemId, count] of inv) {
       if (!itemsData.items[itemId]) {
-        user.removeItemImportant(itemId);
+        removingItemsId.push(itemId);
         continue;
       }
       
@@ -40,6 +41,8 @@ async function createInvImage(user) {
 				line = [];
 			}
     }
+
+    removingItemsId.length && user.removeItemsImportant(removingItemsId);
 
     if (line.length > 0) {
       itemsId.push(line);
