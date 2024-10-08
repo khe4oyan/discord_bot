@@ -68,8 +68,8 @@ class Box {
   async createImage() {
     // calculate max chance
     let totalChance = 0;
-    for (let chance of this.items.keys()) {
-      totalChance += chance;
+    for (let [chance, itemIds] of this.items.entries()) {
+      totalChance += chance * itemIds.length;
     }
 
     const maxItemsInLine = 4;

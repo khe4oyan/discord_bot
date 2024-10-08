@@ -13,14 +13,14 @@ const boxesData = {
       .setPrice(10), // Цена открытия ящика
 
     new Box("Антикварный ящик")
-			.addNewItem(9, 15) // Золотое кольцо
-			.addNewItem(8, 20) // Позолоченный браслет
-			.addNewItem(6, 100) // Серебряная ложка
+      .addNewItem(9, 15) // Золотое кольцо
+      .addNewItem(8, 20) // Позолоченный браслет
+      .addNewItem(6, 100) // Серебряная ложка
       .setIsActive()
       .setPrice(100), // Цена открытия ящика
 
     new Box("Строительный ящик")
-			.addNewItem(5, 100) // Кусок доски
+      .addNewItem(5, 100) // Кусок доски
       .setIsActive()
       .setPrice(15), // Цена открытия ящика
   ],
