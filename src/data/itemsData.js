@@ -1,7 +1,7 @@
 const Item = require("../classes/Item");
 
 /*
-  ulitimate: "Золотой", // gold
+  ultimate: "Золотой", // gold
   legendary: "Легендарный", // red
   epic: "Эпический", // pink
   elite: "Элитный", // purple
@@ -25,7 +25,7 @@ const itemsData = {
     new Item("Золотое кольцо", 100, Item.quality.rare, "kolco.png"),
   ],
 
-  shop: [9, 8, 7, 6, 5, 3, 4, 1, 0, 2],
+  shop: [9, 8, 7, 6],
 };
 
 module.exports = itemsData;

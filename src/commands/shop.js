@@ -1,5 +1,6 @@
 const { items, shop } = require("../data/itemsData"); 
 const ImgManager = require("../classes/ImgManager.js");
+const Item = require("../classes/Item.js");
 
 // shop is items index array
 
@@ -16,7 +17,7 @@ module.exports = {
     for (let i = 0; i < shop.length; ++i) {
       for (let j = 0; j < items.length; ++j) {
         if (items[j].id === shop[i]) {
-          line.push(items[shop[i]]);
+          line.push(items[j]);
           if (line.length === maxItemsInLine) {
             itemsId.push(line);
             line = [];
@@ -47,8 +48,8 @@ module.exports = {
       for (let j = 0; j < itemsId[i].length; ++j) {
         const itemData = itemsId[i][j];
         let itemBuffer = await itemData.createImage();
-        itemBuffer = await ImgManager.addTextToImage(itemBuffer, `${itemData.price}$`, 10, height - 40, 25, "#fffa");
-        itemBuffer = await ImgManager.addTextToImage(itemBuffer, `ID: ${itemData.id}`, 10, 4, 23, "#fff5");
+        itemBuffer = await ImgManager.addTextToImage(itemBuffer, `${itemData.price}$`, 10, height - 40, 25, itemData.type === Item.quality.ultimate ? "#000" : "#fff");
+        itemBuffer = await ImgManager.addTextToImage(itemBuffer, `ID: ${itemData.id}`, 10, 4, 23, itemData.type === Item.quality.ultimate ? "#000" : "#fff", "start");
 
         const x = j * width + j * gap;
         const y = i * height + i * gap;

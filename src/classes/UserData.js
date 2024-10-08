@@ -239,8 +239,8 @@ class UserData {
         const [itemData, count] = itemsId[i][j];
         
         let itemBuffer = await itemData.createImage();
-        itemBuffer = await ImgManager.addTextToImage(itemBuffer, `${count}`, width - 10, height - 40, 25, "#fffa", "end");
-        itemBuffer = await ImgManager.addTextToImage(itemBuffer, `ID: ${itemData.id}`, 10, 4, 23, "#fff5", "start");
+        itemBuffer = await ImgManager.addTextToImage(itemBuffer, `${count}`, width - 10, height - 40, 25, itemData.type === Item.quality.ultimate ? "#000" : "#fff", "end");
+        itemBuffer = await ImgManager.addTextToImage(itemBuffer, `ID: ${itemData.id}`, 10, 4, 23, itemData.type === Item.quality.ultimate ? "#000" : "#fff", "start");
 
         const x = j * width + j * gap;
         const y = i * height + i * gap;
