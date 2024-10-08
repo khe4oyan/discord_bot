@@ -77,6 +77,7 @@ class Box {
     // get items id
     const itemsId = [];
     let line = [];
+    
     for (let [chance, itemIds] of this.items.entries()) {
       for (let i = 0; i < itemIds.length; ++i) {
         let prcentOfTotalChance = +((chance * 100) / totalChance).toFixed(2);
@@ -84,10 +85,16 @@ class Box {
           prcentOfTotalChance = Math.round(prcentOfTotalChance);
         }
         
-        line.push([itemsData.items[itemIds[i]], prcentOfTotalChance]);
-        if (line.length === maxItemsInLine) {
-          itemsId.push(line);
-          line = [];
+        for (let j = 0; j < itemsData.items.length; ++j) {
+          if (itemsData.items[j].id === itemIds[i]) {
+            line.push([itemsData.items[j], prcentOfTotalChance]);
+            if (line.length === maxItemsInLine) {
+              itemsId.push(line);
+              line = [];
+            }
+
+            break;
+          }
         }
       }
     }
@@ -102,7 +109,6 @@ class Box {
       const image = await itemsId[0][0][0].createImage();
       return ImgManager.loadImg(image).metadata();
     })()
-    
 
     const gap = 10;
     const colls = ((width * maxItemsInLine) + (maxItemsInLine * gap));
