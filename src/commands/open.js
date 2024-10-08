@@ -16,7 +16,7 @@ module.exports = {
     },
   ],
 
-  execute: async (interaction) => {
+  async execute(interaction) {
     await interaction.deferReply();
     const boxNumber = interaction.options.getInteger("box_id");
     const { boxes } = boxesData;

@@ -13,7 +13,7 @@ module.exports = {
     }
   ],
 
-  execute: async (interaction) => {
+  async execute(interaction) {
     await interaction.deferReply();
 
     const item_id = interaction.options.getInteger("item_id");

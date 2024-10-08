@@ -4,7 +4,7 @@ const ImgManager = require("../classes/ImgManager.js");
 module.exports = {
 	name: 'inv',
 	description: 'Показать инвентарь',
-	execute: async (interaction) => {
+	async execute(interaction) {
 		await interaction.deferReply();
 		const user = new UserData(interaction.user, interaction.guildId);
 

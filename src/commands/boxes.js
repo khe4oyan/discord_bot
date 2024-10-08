@@ -4,7 +4,7 @@ const boxesData = require("../data/boxesData.js");
 module.exports = {
 	name: 'boxes',
 	description: 'Показать список ящиков',
-	execute: async (interaction) => {
+	async execute(interaction) {
 		if (boxesData.boxes.length > 0) {
 			await interaction.deferReply();
 			
