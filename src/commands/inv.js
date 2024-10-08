@@ -9,8 +9,13 @@ module.exports = {
 		const user = new UserData(interaction.user, interaction.guildId);
 
 		if (user.inventory.length > 0) {
-      const attachment = ImgManager.createAttachmentDiscord(await user.createInvImage());
-	    await interaction.editReply({ content: "## Инвентарь \n-# /sell [id] - чтобы продать предмет", files: [attachment]});
+			const invImage = await user.createInvImage();
+			if (invImage) {
+				const attachment = ImgManager.createAttachmentDiscord(invImage);
+				await interaction.editReply({ content: "## Инвентарь \n-# /sell [id] - чтобы продать предмет", files: [attachment]});
+			} else {
+				await interaction.editReply("В инвентаре пусто");
+			}
 		} else {
 			await interaction.editReply('В инвентаре пусто');
 		}

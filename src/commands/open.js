@@ -28,9 +28,7 @@ module.exports = {
         const boxPrice = boxes[boxNumber].price;
         
 				if (!userData.hasBalance(boxPrice)) {
-					await interaction.editReply(
-						`Этот ящик стоит: ${boxPrice}.\n Твой баланс: ${userData.balance}.`
-          );
+					await interaction.editReply(`Этот ящик стоит: ${boxPrice}.\n Твой баланс: ${userData.balance}.`);
         } else {
 					userData.removeBalance(boxPrice);
           await openBox(interaction, boxes[boxNumber], userData);
@@ -46,19 +44,26 @@ module.exports = {
 
 async function openBox(interaction, openBoxData, userData) {
   const itemId = openBoxData.dropItemId();
-  const itemData = itemsData.items[itemId];
-  userData.addItem(itemId);
 
-  const imgBuffer = await ImgManager.extend(await itemData.createImage(), {top: 12, bottom: 11});
-  const attachment = ImgManager.createAttachmentDiscord(imgBuffer);
-  
-  let contentData = `## ${itemData.name}\n`;
-  contentData += `Качество: ${itemData.getTypeTitle()}\n`;
-  contentData += `Цена: ${itemData.price}\n`;
-  contentData += `ID: ${itemData.id}\n`;
+  for (let i = 0; i < itemsData.items.length; ++i) {
+    if (itemsData.items[i].id === itemId) {
+      const itemData = itemsData.items[i];
+      userData.addItem(itemId);
+    
+      const imgBuffer = await ImgManager.extend(await itemData.createImage(), {top: 12, bottom: 11});
+      const attachment = ImgManager.createAttachmentDiscord(imgBuffer);
+      
+      let contentData = `## ${itemData.name}\n`;
+      contentData += `Качество: ${itemData.getTypeTitle()}\n`;
+      contentData += `Цена: ${itemData.price}\n`;
+      contentData += `ID: ${itemData.id}\n`;
+    
+      return await interaction.editReply({
+        content: contentData,
+        files: [attachment],
+      });
+    }
+  }
 
-  await interaction.editReply({
-    content: contentData,
-    files: [attachment],
-  });
+  return await interaction.editReply("[ОШИБКА]: Выпал не существующий предмет");
 }

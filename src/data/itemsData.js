@@ -7,7 +7,7 @@ const Item = require("../classes/Item");
   elite: "Элитный", // purple
   rare: "Редкий", // blue
   special: "Специальный", // green
-  classc: "Обычный", // gray
+  classic: "Обычный", // gray
 */
 
 const itemsData = {
@@ -25,7 +25,7 @@ const itemsData = {
     new Item("Золотое кольцо", 100, Item.quality.rare, "kolco.png"),
   ],
 
-  shop: [], // TODO: implement only for infinity buy limit items id
+  shop: [9, 8, 7, 6, 5, 3, 4, 1, 0, 2],
 };
 
 module.exports = itemsData;

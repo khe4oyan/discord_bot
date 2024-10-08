@@ -106,9 +106,21 @@ class UserData {
   
   removeItem(removingItemId) {
     const userInventory = this.inventory;
+    let removingItemInd = null;
+    {
+      let itemDoesNotHave = true;
 
-    if (!itemsData.items[removingItemId]) {
-      return "Указан неверный ID предмета.\n-# /inv - чтобы посмотреть свой инвентарь";
+      for (let i = 0; i < itemsData.items.length; ++i) {
+        if (itemsData.items[i].id === removingItemId) {
+          removingItemInd = i;
+          itemDoesNotHave = false;
+          break;
+        }
+      }
+  
+      if (itemDoesNotHave) {
+        return "Указан неверный ID предмета.\n-# /inv - чтобы посмотреть свой инвентарь";
+      }
     }
 
     const newInv = [];
@@ -118,13 +130,12 @@ class UserData {
     for (let i = 0; i < userInventory.length; ++i) {
       const [itemId, count] = userInventory[i];
       if (itemId === removingItemId) {
-        
         if (count > 1) {
           --userInventory[i][1];
           newInv.push(userInventory[i]);
         }
 
-        const sellFor = itemsData.items[removingItemId].price;
+        const sellFor = itemsData.items[removingItemInd].price;
         
         this.balance += sellFor;
         returningMessage += sellFor;
@@ -149,17 +160,17 @@ class UserData {
 
     for (let i = 0; i < userInventory.length; ++i) {
       const [invItemId] = userInventory[i];
-      let isSaveThisIte = true;
+      let isSaveThisItem = true;
 
       for (let i = 0; i < removingItemsId.length; ++i) {
         const removingItemId = removingItemsId[i];
         if (invItemId === removingItemId) {
-          isSaveThisIte = false;
+          isSaveThisItem = false;
           break;
         }
       }
 
-      isSaveThisIte && newInv.push(userInventory[i]);
+      isSaveThisItem && newInv.push(userInventory[i]);
     }
 
     this.inventory = newInv;
@@ -178,26 +189,39 @@ class UserData {
     const maxItemsInLine = inv.length > 5 ? 5 : inv.length;
 
     const removingItemsId = [];
-    for (let [itemId, count] of inv) {
-      if (!itemsData.items[itemId]) {
+    
+   for (let [itemId, count] of inv) {
+      let isRemovingItem = true;
+      for (let j = 0; j < itemsData.items.length; ++j) {
+        if (itemsData.items[j].id === itemId) {
+          isRemovingItem = false;
+          
+          line.push([itemsData.items[j], count]);
+          if (line.length === maxItemsInLine) {
+            itemsId.push(line);
+            line = [];
+          }
+        }
+      }
+      
+      if (isRemovingItem) {
         removingItemsId.push(itemId);
         continue;
       }
-      
-      line.push([itemsData.items[itemId], count]);
-      if (line.length === maxItemsInLine) {
-        itemsId.push(line);
-        line = [];
-      }
     }
 
+    // remove game removed items in inventory
     removingItemsId.length && this.#removeItemsImportant(removingItemsId);
 
     if (line.length > 0) {
       itemsId.push(line);
       line = [];
+    } else {
+      if (itemsId.length < 1) {
+        return null;
+      }
     }
-    
+
     // get item image width, height
     const {width, height} = await (async () => {
       const image = await itemsId[0][0][0].createImage();

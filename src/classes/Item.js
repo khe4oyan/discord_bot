@@ -10,7 +10,7 @@ class Item {
   craft;
   expiredAt;
 
-  static crafts = [];
+  // static crafts = [];
   static indexCounter = 0;
   static quality = {
     ultimate: "ultimate", // gold
@@ -29,12 +29,12 @@ class Item {
     this.type = type;
     this.img = img;
     this.craft = craft;
-    if (craft) {
-      Item.crafts.push({ 
-        craftableItemId: this.id, 
-        craft,
-      });
-    }
+    // if (craft) {
+    //   Item.crafts.push({ 
+    //     craftableItemId: this.id, 
+    //     craft,
+    //   });
+    // }
     this.expiredAt = expiredAt;
   }
 
@@ -81,6 +81,12 @@ class Item {
     };
 
     return qualityTitle[this.type];
+  }
+
+  idPrefix(tempId) {
+    Item.indexCounter = tempId;
+    this.id = Item.indexCounter++;
+    return this;
   }
 }
 
