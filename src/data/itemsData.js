@@ -1,4 +1,5 @@
 const Item = require("../classes/Item");
+const ItemUpgrade = require("../classes/ItemUpgrade");
 
 /*
   ultimate: "Золотой", // gold
@@ -23,6 +24,13 @@ const itemsData = {
     new Item("Кожаная куртка", 60, Item.quality.special, "kurtka.png"),
     new Item("Позолоченный браслет", 70, Item.quality.rare, "braslet.png"),
     new Item("Золотое кольцо", 100, Item.quality.rare, "kolco.png"),
+
+    // 10
+    new Item("Лепестки Розы", 250, Item.quality.rare, "rose_upgrader.png"),
+    new ItemUpgrade("Роза", 1000, Item.quality.elite)
+      .addLevel(10, 5, "rose_level_1.png")
+      .addLevel(10, 10, "rose_level_2.png")
+      .addLevel(10, 20, "rose_level_3.png")
   ],
 
   shop: [9, 8, 7, 6],
