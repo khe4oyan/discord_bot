@@ -28,7 +28,7 @@ module.exports = {
         const boxPrice = boxes[boxNumber].price;
         
 				if (!userData.hasBalance(boxPrice)) {
-					await interaction.editReply(`Этот ящик стоит: ${boxPrice}.\n Твой баланс: ${userData.balance}.`);
+					await interaction.editReply(`Этот ящик стоит ${boxPrice} монет.\n Тебе не хватает  ${boxPrice - userData.balance} монет.`);
         } else {
 					userData.removeBalance(boxPrice);
           await openBox(interaction, boxes[boxNumber], userData);
@@ -55,7 +55,7 @@ async function openBox(interaction, openBoxData, userData) {
       
       let contentData = `## ${itemData.name}\n`;
       contentData += `Качество: ${itemData.getTypeTitle()}\n`;
-      contentData += `Цена: ${itemData.price}\n`;
+      contentData += `Цена: ${itemData.price} монет\n`;
       contentData += `ID: ${itemData.id}\n`;
     
       return await interaction.editReply({

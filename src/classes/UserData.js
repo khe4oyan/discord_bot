@@ -148,7 +148,7 @@ class UserData {
     if (itemSold) {
       this.inventory = newInv;
       this.#save();
-      return `Предмет продан за: ${returningMessage}`;
+      return `Предмет продан за ${returningMessage} монет`;
     } else {
       return "Указан неверный ID предмета.\n-# /inv - чтобы посмотреть свой инвентарь";
     }
@@ -239,8 +239,8 @@ class UserData {
         const [itemData, count] = itemsId[i][j];
         
         let itemBuffer = await itemData.createImage();
-        itemBuffer = await ImgManager.addTextToImage(itemBuffer, `${count}`, width - 10, height - 40, 25, itemData.type === Item.quality.ultimate ? "#000" : "#fff", "end");
-        itemBuffer = await ImgManager.addTextToImage(itemBuffer, `ID: ${itemData.id}`, 10, 4, 23, itemData.type === Item.quality.ultimate ? "#000" : "#fff", "start");
+        itemBuffer = await ImgManager.addTextToImage(itemBuffer, `${count}`, width - 10, height - 40, 25, itemData.type === Item.quality.ultimate ? "#000" : "#fffa", "end");
+        itemBuffer = await ImgManager.addTextToImage(itemBuffer, `ID: ${itemData.id}`, 10, 4, 23, itemData.type === Item.quality.ultimate ? "#000" : "#fffa", "start");
 
         const x = j * width + j * gap;
         const y = i * height + i * gap;

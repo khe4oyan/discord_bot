@@ -19,9 +19,9 @@ const itemsData = {
     new Item("Глиняная кружка", 6, Item.quality.classic, "glin_stakan.png"),
     new Item("Старая лампочка", 4, Item.quality.classic, "lamp.png"),
     new Item("Кусок доски", 7, Item.quality.classic, "doska.png"),
-    new Item("Серебряная ложка", 50, Item.quality.rare, "lojka_serebro.png"),
-    new Item("Кожаная куртка", 60, Item.quality.rare, "kurtka.png"),
-    new Item("Позолоченный браслет", 80, Item.quality.rare, "braslet.png"),
+    new Item("Серебряная ложка", 50, Item.quality.special, "lojka_serebro.png"),
+    new Item("Кожаная куртка", 60, Item.quality.special, "kurtka.png"),
+    new Item("Позолоченный браслет", 70, Item.quality.rare, "braslet.png"),
     new Item("Золотое кольцо", 100, Item.quality.rare, "kolco.png"),
   ],
 

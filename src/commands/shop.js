@@ -48,8 +48,8 @@ module.exports = {
       for (let j = 0; j < itemsId[i].length; ++j) {
         const itemData = itemsId[i][j];
         let itemBuffer = await itemData.createImage();
-        itemBuffer = await ImgManager.addTextToImage(itemBuffer, `${itemData.price}$`, 10, height - 40, 25, itemData.type === Item.quality.ultimate ? "#000" : "#fff");
-        itemBuffer = await ImgManager.addTextToImage(itemBuffer, `ID: ${itemData.id}`, 10, 4, 23, itemData.type === Item.quality.ultimate ? "#000" : "#fff", "start");
+        itemBuffer = await ImgManager.addTextToImage(itemBuffer, `${itemData.price}$`, 10, height - 40, 25, itemData.type === Item.quality.ultimate ? "#000" : "#fffa");
+        itemBuffer = await ImgManager.addTextToImage(itemBuffer, `ID: ${itemData.id}`, 10, 4, 23, itemData.type === Item.quality.ultimate ? "#000" : "#fffa", "start");
 
         const x = j * width + j * gap;
         const y = i * height + i * gap;
