@@ -22,7 +22,9 @@ module.exports = async function commandsRegister(client) {
     });
   }
   
-  return; // for tests
+  if (+process.env.IS_LOCAL) {
+    return; // for tests
+  }
 
   await client.application.commands.set([]).then(() => console.log("Все команды удалены."));
   await client.application.commands.set(commands).then(() => console.log("Новые команды зарегистрированы."));

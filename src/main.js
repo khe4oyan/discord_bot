@@ -7,7 +7,6 @@ const EventMessageCreate = require("./events/EventMessageCreate.js");
 const EventClientReady = require("./events/EventClientReady.js");
 const EventGuildDelete = require("./events/EventGuildDelete.js");
 
-
 // Создаем новый клиент
 const client = new Client({
   intents: [
