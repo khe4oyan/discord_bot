@@ -1,6 +1,6 @@
 const ImgManager = require("./ImgManager.js");
-const itemsData = require("../data/itemsData.js");
 const Item = require("./Item.js");
+const getItemDataById = require("../utils/getItemDataById.js");
 
 class Box {
   static indexCounter = 0;
@@ -85,15 +85,13 @@ class Box {
           prcentOfTotalChance = Math.round(prcentOfTotalChance);
         }
         
-        for (let j = 0; j < itemsData.items.length; ++j) {
-          if (itemsData.items[j].id === itemIds[i]) {
-            line.push([itemsData.items[j], prcentOfTotalChance]);
-            if (line.length === maxItemsInLine) {
-              itemsId.push(line);
-              line = [];
-            }
+        const generalItemData = getItemDataById(itemIds[i]);
 
-            break;
+        if (generalItemData) {
+          line.push([generalItemData, prcentOfTotalChance]);
+          if (line.length === maxItemsInLine) {
+            itemsId.push(line);
+            line = [];
           }
         }
       }

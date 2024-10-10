@@ -1,6 +1,7 @@
-const { items, shop } = require("../data/itemsData"); 
+const { shop } = require("../data/itemsData"); 
 const ImgManager = require("../classes/ImgManager.js");
 const Item = require("../classes/Item.js");
+const getItemDataById = require("../utils/getItemDataById.js");
 
 // shop is items index array
 
@@ -15,14 +16,12 @@ module.exports = {
     const maxItemsInLine = shop.length > 4 ? 4 : shop.length;
 
     for (let i = 0; i < shop.length; ++i) {
-      for (let j = 0; j < items.length; ++j) {
-        if (items[j].id === shop[i]) {
-          line.push(items[j]);
-          if (line.length === maxItemsInLine) {
-            itemsId.push(line);
-            line = [];
-          }
-          break;
+      const generalItemData = getItemDataById(shop[i]);
+      if (generalItemData) {
+        line.push(generalItemData);
+        if (line.length === maxItemsInLine) {
+          itemsId.push(line);
+          line = [];
         }
       }
     }

@@ -33,7 +33,7 @@ const itemsData = {
       .addLevel(10, 20, "rose_level_3.png")
   ],
 
-  shop: [9, 8, 7, 6],
+  shop: [11, 9, 8, 7, 6],
 };
 
 module.exports = itemsData;

@@ -4,7 +4,7 @@ const boxesData = {
   boxes: [
     new Box("Прокачиваемая Роза", "#B22B61", "#FFD8E8")
       .addNewItem(11, 5)
-      .addNewItem(10, 50)
+      .addNewItem(10, 100)
       .setIsActive()
       .setPrice(500),
 
@@ -19,7 +19,7 @@ const boxesData = {
       .addNewItem(2, 15)
       .addNewItem(0, 15)
       .addNewItem(5, 15)
-      // .setIsActive()
+      .setIsActive()
       .setPrice(10),
   ],
 };

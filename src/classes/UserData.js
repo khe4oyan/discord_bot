@@ -2,6 +2,7 @@ const FileManager = require("./FileManager.js");
 const ImgManager = require("./ImgManager.js");
 const Item = require("./Item.js");
 const itemsData = require("../data/itemsData.js");
+const getItemDataById = require("../utils/getItemDataById.js");
 
 class UserData {
   id;
@@ -198,24 +199,24 @@ class UserData {
     
    for (let [itemId, count, upgradeLvl] of inv) {
       let isRemovingItem = true;
-      for (let j = 0; j < itemsData.items.length; ++j) {
-        if (itemsData.items[j].id === itemId) {
-          isRemovingItem = false;
-          
-          const data = [itemsData.items[j], count];
-          // если предмет улучшаемый
-          if (upgradeLvl) { 
-            data.push(upgradeLvl);
-          }
 
-          line.push(data);
-          if (line.length === maxItemsInLine) {
-            itemsId.push(line);
-            line = [];
-          }
+      const generalItemData = getItemDataById(itemId);
+      if (generalItemData) {
+        isRemovingItem = false;
+          
+        const data = [generalItemData, count];
+        // если предмет улучшаемый
+        if (upgradeLvl) { 
+          data.push(upgradeLvl);
+        }
+
+        line.push(data);
+        if (line.length === maxItemsInLine) {
+          itemsId.push(line);
+          line = [];
         }
       }
-      
+
       if (isRemovingItem) {
         removingItemsId.push(itemId);
         continue;
@@ -248,12 +249,12 @@ class UserData {
     
     for (let i = 0; i < itemsId.length; ++i) {
       for (let j = 0; j < itemsId[i].length; ++j) {
-        const [itemData, count, upgraddeLevel] = itemsId[i][j];
+        const [itemData, count, upgradeLevel] = itemsId[i][j];
         
         let itemBuffer = await itemData.createImage();
 
-        if (upgraddeLevel) {
-          itemBuffer = await ImgManager.addTextToImage(itemBuffer, `lvl.${upgraddeLevel}`, width - 10, height - 40, 25, itemData.type === Item.quality.ultimate ? "#000" : "#fffa", "end");
+        if (upgradeLevel) {
+          itemBuffer = await ImgManager.addTextToImage(itemBuffer, `lvl.${upgradeLevel}`, width - 10, height - 40, 25, itemData.type === Item.quality.ultimate ? "#000" : "#fffa", "end");
         } else {
           itemBuffer = await ImgManager.addTextToImage(itemBuffer, `${count}`, width - 10, height - 40, 25, itemData.type === Item.quality.ultimate ? "#000" : "#fffa", "end");
         }

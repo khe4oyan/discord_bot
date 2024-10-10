@@ -1,8 +1,8 @@
-const commandOptionTypes = require("../utils/commandOptionTypes.js");
-const itemsData = require("../data/itemsData.js");
-const boxesData = require("../data/boxesData.js");
 const UserData = require("../classes/UserData.js");
 const ImgManager = require("../classes/ImgManager.js");
+const commandOptionTypes = require("../utils/commandOptionTypes.js");
+const boxesData = require("../data/boxesData.js");
+const getItemDataById = require("../utils/getItemDataById.js");
 
 module.exports = {
   name: "open",
@@ -45,25 +45,23 @@ module.exports = {
 async function openBox(interaction, openBoxData, userData) {
   const itemId = openBoxData.dropItemId();
 
-  for (let i = 0; i < itemsData.items.length; ++i) {
-    if (itemsData.items[i].id === itemId) {
-      const itemData = itemsData.items[i];
-      userData.addItem(itemId);
+  const generalItemData = getItemDataById(itemId);
+  if (generalItemData) {
+    userData.addItem(itemId);
+  
+    const imgBuffer = await ImgManager.extend(await generalItemData.createImage(), {top: 12, bottom: 11});
+    const attachment = ImgManager.createAttachmentDiscord(imgBuffer);
     
-      const imgBuffer = await ImgManager.extend(await itemData.createImage(), {top: 12, bottom: 11});
-      const attachment = ImgManager.createAttachmentDiscord(imgBuffer);
-      
-      let contentData = `## ${itemData.name}\n`;
-      contentData += `Качество: ${itemData.getTypeTitle()}\n`;
-      contentData += `Цена: ${itemData.price} монет\n`;
-      contentData += `ID: ${itemData.id}\n`;
-    
-      return await interaction.editReply({
-        content: contentData,
-        files: [attachment],
-      });
-    }
+    let contentData = `## ${generalItemData.name}\n`;
+    contentData += `Качество: ${generalItemData.getTypeTitle()}\n`;
+    contentData += `Цена: ${generalItemData.price} монет\n`;
+    contentData += `ID: ${generalItemData.id}\n`;
+  
+    await interaction.editReply({
+      content: contentData,
+      files: [attachment],
+    });
+  } else {
+    await interaction.editReply("[ОШИБКА]: Выпал не существующий предмет");
   }
-
-  return await interaction.editReply("[ОШИБКА]: Выпал не существующий предмет");
 }
