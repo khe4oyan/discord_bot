@@ -190,6 +190,11 @@ class UserData {
     this.#save();
   }
 
+  upgradeItemByInd(itemInd) {
+    ++this.inventory[itemInd][2];
+    this.#save();
+  }
+
   async createInvImage() {
     const inv = this.inventory;
     const itemsId = [];
@@ -255,17 +260,17 @@ class UserData {
         let itemBuffer = await itemData.createImage(upgradeLevel);
 
         if (upgradeLevel) {
-          const lvl = upgradeLevel === itemData.upgrades.length ? 'MAX' : upgradeLevel;
-          itemBuffer = await ImgManager.addTextToImage(itemBuffer, `lvl.${lvl}`, width - 10, height - 40, 25, itemData.type === Item.quality.ultimate ? "#000" : "#fffa", "end");
+          itemBuffer = await ImgManager.addTextToImage(itemBuffer, `lvl`, width - 13, 45, 22, itemData.type === Item.quality.ultimate ? "#000" : "#fffa", "end");
+          itemBuffer = await ImgManager.addTextToImage(itemBuffer, upgradeLevel, width - 10, 70, 20, itemData.type === Item.quality.ultimate ? "#000" : "#fffa", "end");
 
           // добавить иконку прокачиваемого предмета на картинку
           const upgradeIcon = await ImgManager.loadImg(path.join(__dirname, "../assets/img/quality/upgrade.png")).toBuffer();
-          
+
           const itemBufferMeta = await ImgManager.loadImg(itemBuffer).metadata();
           itemBuffer = await ImgManager.overlayImage(itemBuffer, upgradeIcon, itemBufferMeta.width - 40, 10, 35, 35);
-        } else {
-          itemBuffer = await ImgManager.addTextToImage(itemBuffer, `${count}`, width - 10, height - 40, 25, itemData.type === Item.quality.ultimate ? "#000" : "#fffa", "end");
         }
+
+        itemBuffer = await ImgManager.addTextToImage(itemBuffer, `${count}`, width - 10, height - 40, 25, itemData.type === Item.quality.ultimate ? "#000" : "#fffa", "end");
 
         itemBuffer = await ImgManager.addTextToImage(itemBuffer, `ID: ${itemData.id}`, 10, 4, 23, itemData.type === Item.quality.ultimate ? "#000" : "#fffa");
         itemBuffer = await ImgManager.addTextToImage(itemBuffer, `${itemData.price}$`, 10, height - 40, 23, itemData.type === Item.quality.ultimate ? "#000" : "#fffa");

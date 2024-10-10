@@ -10,8 +10,8 @@ module.exports = {
   options: [
     {
       name: "item_id",
-      description: "номер предмета",
-      require: true,
+      description: "ID предмета, который хочешь купить",
+      required: true,
       type: commandOptionTypes.INTEGER
     }
   ],

@@ -7,7 +7,7 @@ module.exports = {
   options: [
     {
       name: "item_id",
-      description: "номер предмета",
+      description: "ID предмета, который хочешь продать",
       required: true,
       type: commandOptionTypes.INTEGER,
     }

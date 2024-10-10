@@ -11,7 +11,7 @@ module.exports = {
   options: [
     {
       name: "box_id",
-      description: "номер ящика",
+      description: "ID ящика, который хочешь открыть",
       required: true,
       type: commandOptionTypes.INTEGER,
     },
@@ -67,6 +67,11 @@ async function openBox(interaction, openBoxData, userData) {
     contentData += `Качество: ${generalItemData.getTypeTitle()}\n`;
     contentData += `Цена: ${generalItemData.price} монет\n`;
     contentData += `ID: ${generalItemData.id}\n`;
+    contentData += `\n-# /sell ${generalItemData.id} - чтобы продать этот предмет\n`;
+    
+    if (generalItemData.upgrades) {
+      contentData += `-# /upgrade ${generalItemData.id} - чтобы прокачать этот предмет\n`;
+    }
   
     await interaction.editReply({
       content: contentData,
