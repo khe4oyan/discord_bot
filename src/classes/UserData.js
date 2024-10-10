@@ -260,7 +260,8 @@ class UserData {
           itemBuffer = await ImgManager.addTextToImage(itemBuffer, `${count}`, width - 10, height - 40, 25, itemData.type === Item.quality.ultimate ? "#000" : "#fffa", "end");
         }
 
-        itemBuffer = await ImgManager.addTextToImage(itemBuffer, `ID: ${itemData.id}`, 10, 4, 23, itemData.type === Item.quality.ultimate ? "#000" : "#fffa", "start");
+        itemBuffer = await ImgManager.addTextToImage(itemBuffer, `ID: ${itemData.id}`, 10, 4, 23, itemData.type === Item.quality.ultimate ? "#000" : "#fffa");
+        itemBuffer = await ImgManager.addTextToImage(itemBuffer, `${itemData.price}$`, 10, height - 40, 23, itemData.type === Item.quality.ultimate ? "#000" : "#fffa");
 
         const x = j * width + j * gap;
         const y = i * height + i * gap;
