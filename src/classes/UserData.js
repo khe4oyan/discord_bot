@@ -195,6 +195,10 @@ class UserData {
     this.#save();
   }
 
+  removeItemCountByInd(itemId, count) {
+    // TODO : implement. Return true(if returned) or false(if not returned)
+  }
+
   async createInvImage() {
     const inv = this.inventory;
     const itemsId = [];
@@ -261,7 +265,7 @@ class UserData {
 
         if (upgradeLevel) {
           itemBuffer = await ImgManager.addTextToImage(itemBuffer, `lvl`, width - 13, 45, 22, itemData.type === Item.quality.ultimate ? "#000" : "#fffa", "end");
-          itemBuffer = await ImgManager.addTextToImage(itemBuffer, upgradeLevel, width - 10, 70, 20, itemData.type === Item.quality.ultimate ? "#000" : "#fffa", "end");
+          itemBuffer = await ImgManager.addTextToImage(itemBuffer, (upgradeLevel === itemData.upgrades.length ? "M" : upgradeLevel), width - 13, 70, 20, itemData.type === Item.quality.ultimate ? "#000" : "#fffa", "end");
 
           // добавить иконку прокачиваемого предмета на картинку
           const upgradeIcon = await ImgManager.loadImg(path.join(__dirname, "../assets/img/quality/upgrade.png")).toBuffer();
@@ -284,6 +288,8 @@ class UserData {
 
     return ImgManager.extend(background, {top: 14, left: 13, right: 13, bottom: 14});
   }
+
+  
 };
 
 module.exports = UserData;

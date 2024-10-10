@@ -41,14 +41,19 @@ module.exports = {
       return await interaction.editReply("Этот предмет не улучшаемый");
     }
 
-    // dont have upgrade items count
-
+    // item can be upgradeable item max level
     if (userInv[itemInd][2] === globalItemDate.upgrades.length) {
-      // item can be upgradeable item max level
       return await interaction.editReply("Этот предмет максимально прокачен");
+    }
+    
+    // dont have upgrade items count
+    const {upgradeItemId, upgradeItemCount} = globalItemDate.upgrades[userInv[itemInd][2] - 1];
+    if (!user.removeItemCountByInd(upgradeItemId, upgradeItemCount)) {
+      return await interaction.editReply("Нет фрагментов для улучшения");
     }
 
     user.upgradeItemByInd(itemInd);
+    // TODO: create and send upgrade image
     await interaction.editReply(`Предмет улучшен до ${userInv[itemInd][2]} уровня!`);
   }
 };

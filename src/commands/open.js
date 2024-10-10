@@ -47,9 +47,6 @@ async function openBox(interaction, openBoxData, userData) {
   const itemId = openBoxData.dropItemId();
 
   const generalItemData = getItemDataById(itemId);
-  // TODO:
-  // if upgrades check have itemId in inventory
-  // if has try to drop again
   if (generalItemData) {
     userData.addItem(itemId);
   
@@ -68,7 +65,7 @@ async function openBox(interaction, openBoxData, userData) {
     contentData += `Цена: ${generalItemData.price} монет\n`;
     contentData += `ID: ${generalItemData.id}\n`;
     contentData += `\n-# /sell ${generalItemData.id} - чтобы продать этот предмет\n`;
-    
+
     if (generalItemData.upgrades) {
       contentData += `-# /upgrade ${generalItemData.id} - чтобы прокачать этот предмет\n`;
     }
