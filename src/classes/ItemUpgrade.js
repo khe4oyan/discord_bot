@@ -16,6 +16,16 @@ class ItemUpgrade extends Item {
     this.upgrades.push({img, upgradeItemId, upgradeItemCount});
     return this;
   }
+
+  async createImage(upgradeLevel) {
+    const upgrade = this.upgrades[upgradeLevel - 1];
+    
+    if (upgrade) {
+      this.img = upgrade.img;
+    }
+    
+    return await super.createImage();
+  }
 }
 
 module.exports = ItemUpgrade;

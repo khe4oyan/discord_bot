@@ -251,10 +251,11 @@ class UserData {
       for (let j = 0; j < itemsId[i].length; ++j) {
         const [itemData, count, upgradeLevel] = itemsId[i][j];
         
-        let itemBuffer = await itemData.createImage();
+        let itemBuffer = await itemData.createImage(upgradeLevel);
 
         if (upgradeLevel) {
-          itemBuffer = await ImgManager.addTextToImage(itemBuffer, `lvl.${upgradeLevel}`, width - 10, height - 40, 25, itemData.type === Item.quality.ultimate ? "#000" : "#fffa", "end");
+          const lvl = upgradeLevel === itemData.upgrades.length ? 'MAX' : upgradeLevel;
+          itemBuffer = await ImgManager.addTextToImage(itemBuffer, `lvl.${lvl}`, width - 10, height - 40, 25, itemData.type === Item.quality.ultimate ? "#000" : "#fffa", "end");
         } else {
           itemBuffer = await ImgManager.addTextToImage(itemBuffer, `${count}`, width - 10, height - 40, 25, itemData.type === Item.quality.ultimate ? "#000" : "#fffa", "end");
         }
