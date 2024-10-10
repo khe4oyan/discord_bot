@@ -8,9 +8,8 @@ class Item {
   type;
   img;
   craft;
-  expiredAt;
+  isTemporary;
 
-  // static crafts = [];
   static indexCounter = 0;
   static quality = {
     ultimate: "ultimate", // gold
@@ -22,20 +21,14 @@ class Item {
     classic: "classic", // gray
   };
 
-  constructor( name, price, type, img, craft = null, expiredAt = null) {
+  constructor( name, price, type, img, craft = null, isTemporary = false) {
     this.id = Item.indexCounter++;
     this.name = name;
     this.price = price;
     this.type = type;
     this.img = img;
     this.craft = craft;
-    // if (craft) {
-    //   Item.crafts.push({ 
-    //     craftableItemId: this.id, 
-    //     craft,
-    //   });
-    // }
-    this.expiredAt = expiredAt;
+    this.isTemporary = isTemporary;
   }
 
   async createImage() {
