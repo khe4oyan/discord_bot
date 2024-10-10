@@ -46,6 +46,9 @@ async function openBox(interaction, openBoxData, userData) {
   const itemId = openBoxData.dropItemId();
 
   const generalItemData = getItemDataById(itemId);
+  // TODO:
+  // if upgrades check have itemId in inventory
+  // if has try to drop again
   if (generalItemData) {
     userData.addItem(itemId);
   

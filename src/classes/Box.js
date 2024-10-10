@@ -3,7 +3,6 @@ const Item = require("./Item.js");
 const getItemDataById = require("../utils/getItemDataById.js");
 
 class Box {
-  static indexCounter = 0;
   id;
   name;
   price;
@@ -11,7 +10,9 @@ class Box {
   isActive;
   headerColor;
   headerTitleColor;
-
+  
+  static indexCounter = 0;
+  
   constructor(boxName, headerColor = "#4C4E53", headerTitleColor = "#fff") {
     this.id = Box.indexCounter++;
     this.name = boxName;

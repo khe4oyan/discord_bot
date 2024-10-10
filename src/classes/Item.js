@@ -76,7 +76,7 @@ class Item {
     return qualityTitle[this.type];
   }
 
-  idPrefix(tempId) {
+  newId(tempId) {
     Item.indexCounter = tempId;
     this.id = Item.indexCounter++;
     return this;
