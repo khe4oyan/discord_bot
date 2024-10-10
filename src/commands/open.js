@@ -3,6 +3,7 @@ const ImgManager = require("../classes/ImgManager.js");
 const commandOptionTypes = require("../utils/commandOptionTypes.js");
 const boxesData = require("../data/boxesData.js");
 const getItemDataById = require("../utils/getItemDataById.js");
+const path = require("path");
 
 module.exports = {
   name: "open",
@@ -52,7 +53,14 @@ async function openBox(interaction, openBoxData, userData) {
   if (generalItemData) {
     userData.addItem(itemId);
   
-    const imgBuffer = await ImgManager.extend(await generalItemData.createImage(), {top: 12, bottom: 11});
+    let imgBuffer = await ImgManager.extend(await generalItemData.createImage(), {top: 12, bottom: 11});
+
+    if (generalItemData.upgrades) {
+      const upgradeIcon = await ImgManager.loadImg(path.join(__dirname, "../assets/img/quality/upgrade.png")).toBuffer();
+      const itemBufferMeta = await ImgManager.loadImg(imgBuffer).metadata();
+      imgBuffer = await ImgManager.overlayImage(imgBuffer, upgradeIcon, itemBufferMeta.width - 40, 20, 35, 35);
+    }
+
     const attachment = ImgManager.createAttachmentDiscord(imgBuffer);
     
     let contentData = `## ${generalItemData.name}\n`;

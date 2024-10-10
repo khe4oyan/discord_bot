@@ -1,6 +1,7 @@
 const ImgManager = require("./ImgManager.js");
 const Item = require("./Item.js");
 const getItemDataById = require("../utils/getItemDataById.js");
+const path = require("path");
 
 class Box {
   id;
@@ -10,9 +11,10 @@ class Box {
   isActive;
   headerColor;
   headerTitleColor;
+  availableBefore;
   
   static indexCounter = 0;
-  
+
   constructor(boxName, headerColor = "#4C4E53", headerTitleColor = "#fff") {
     this.id = Box.indexCounter++;
     this.name = boxName;
@@ -21,6 +23,7 @@ class Box {
     this.isActive = false;
     this.headerColor = headerColor;
     this.headerTitleColor = headerTitleColor;
+    this.availableBefore = null;
   }
 
   setPrice(price) {
@@ -118,24 +121,38 @@ class Box {
     for (let i = 0; i < itemsId.length; ++i) {
       for (let j = 0; j < itemsId[i].length; ++j) {
         const [itemData, chance] = itemsId[i][j];
-        const itemBuffer = await itemData.createImage();
-        
-        const itemResult = await ImgManager.addTextToImage(itemBuffer, `${chance}%`, width - 10, 4, 25, itemData.type === Item.quality.ultimate ? "#000" : "#fffa", "end");
+        let itemBuffer = await itemData.createImage();
+        itemBuffer = await ImgManager.addTextToImage(itemBuffer, `${chance}%`, width - 10, height - 40, 25, itemData.type === Item.quality.ultimate ? "#000" : "#fffa", "end");
+
+        if (itemData.upgrades) {
+          const upgradeIcon = await ImgManager.loadImg(path.join(__dirname, "../assets/img/quality/upgrade.png")).toBuffer();
+          
+          const itemBufferMeta = await ImgManager.loadImg(itemBuffer).metadata();
+          itemBuffer = await ImgManager.overlayImage(itemBuffer, upgradeIcon, itemBufferMeta.width - 40, 10, 35, 35);
+        }
 
         const x = j * width + j * gap;
         const y = i * height + i * gap;
 
-        background = await ImgManager.overlayImage(background, itemResult, x, y, width, height);
+        background = await ImgManager.overlayImage(background, itemBuffer, x, y, width, height);
       }
     }
 
     background = await ImgManager.extend(background, {top: 14, left: 13, right: 13, bottom: 14});
     background = await ImgManager.extend(background, {top: 100}, this.headerColor);
 
+    if (Number.isInteger(this.isActive)) {
+      background = await ImgManager.extend(background, {top: 35}, this.headerColor);
+      const backgroundMeta = await ImgManager.loadImg(background).metadata();
+      background = await ImgManager.addTextToImage(background, `————————`, 30, 85, 35, this.headerTitleColor);
+      background = await ImgManager.addTextToImage(background, `————————| осталось ${this.isActive}дн.`, backgroundMeta.width - 30, 85, 35, this.headerTitleColor, 'end');
+    }
+
     const backgroundMetaData = await ImgManager.loadImg(background).metadata();
     background = await ImgManager.addTextToImage(background, this.name, 30, 0, 50, this.headerTitleColor);
     background = await ImgManager.addTextToImage(background, `можно открыть за ${this.price} монет`, 30, 50, 35, this.headerTitleColor);
     background = await ImgManager.addTextToImage(background, `ID: ${this.id}`, backgroundMetaData.width - 30, 0, 50, this.headerTitleColor, "end");
+    
 
     return background;
   }
@@ -143,6 +160,18 @@ class Box {
   async createAttachment() {
     const finalImage = await this.createImage();
     return ImgManager.createAttachmentDiscord(finalImage);
+  }
+
+  setAvailable(day, month, year = new Date().getFullYear()) {
+    this.availableBefore = new Date(`${month}.${day + 1}.${year}`);
+    const differenceTime = this.availableBefore - new Date();
+    const differenceDays = Math.round(differenceTime / (1000 * 3600 * 24));
+
+    if (differenceDays > 0) {
+      this.isActive = differenceDays;
+    }
+
+    return this;
   }
 }
 

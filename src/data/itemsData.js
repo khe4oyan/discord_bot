@@ -28,11 +28,12 @@ const itemsData = {
     // 10
     new Item("Лепестки Розы", 250, Item.quality.rare, "rose_upgrader.png"),
     new ItemUpgrade("Роза", 1000, Item.quality.elite)
-      .addLevel(10, 5, "rose_level_1.png")
-      .addLevel(10, 10, "rose_level_2.png")
-      .addLevel(10, 20, "rose_level_3.png")
+      .addLevel(10, 1, "rose_level_1.png")
+      .addLevel(10, 3, "rose_level_2.png")
+      .addLevel(10, 5, "rose_level_3.png")
   ],
 
+  // прокачиваемым предметам нельзя сюда
   shop: [9, 8, 7, 6],
 };
 

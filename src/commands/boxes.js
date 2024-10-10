@@ -13,7 +13,7 @@ module.exports = {
 			for (let i = 0; i < boxesData.boxes.length; ++i) {
 				const box = boxesData.boxes[i];
 				if (!box.isActive) { continue; }
-
+				
 				const boxImage = await box.createImage();
 				boxImages.push(boxImage);
 			}

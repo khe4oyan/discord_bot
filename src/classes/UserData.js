@@ -3,6 +3,7 @@ const ImgManager = require("./ImgManager.js");
 const Item = require("./Item.js");
 const itemsData = require("../data/itemsData.js");
 const getItemDataById = require("../utils/getItemDataById.js");
+const path = require("path");
 
 class UserData {
   id;
@@ -256,6 +257,12 @@ class UserData {
         if (upgradeLevel) {
           const lvl = upgradeLevel === itemData.upgrades.length ? 'MAX' : upgradeLevel;
           itemBuffer = await ImgManager.addTextToImage(itemBuffer, `lvl.${lvl}`, width - 10, height - 40, 25, itemData.type === Item.quality.ultimate ? "#000" : "#fffa", "end");
+
+          // добавить иконку прокачиваемого предмета на картинку
+          const upgradeIcon = await ImgManager.loadImg(path.join(__dirname, "../assets/img/quality/upgrade.png")).toBuffer();
+          
+          const itemBufferMeta = await ImgManager.loadImg(itemBuffer).metadata();
+          itemBuffer = await ImgManager.overlayImage(itemBuffer, upgradeIcon, itemBufferMeta.width - 40, 10, 35, 35);
         } else {
           itemBuffer = await ImgManager.addTextToImage(itemBuffer, `${count}`, width - 10, height - 40, 25, itemData.type === Item.quality.ultimate ? "#000" : "#fffa", "end");
         }

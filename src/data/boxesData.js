@@ -2,10 +2,10 @@ const Box = require("../classes/Box.js");
 
 const boxesData = {
   boxes: [
-    new Box("Прокачиваемая Роза", "#B22B61", "#FFD8E8")
+    new Box("Прокачиваемая Роза", "#B22B61", "#FFDDEE")
       .addNewItem(11, 5)
       .addNewItem(10, 100)
-      .setIsActive()
+      .setAvailable(10, 12)
       .setPrice(500),
 
     new Box("Ящик с барахлом")
@@ -18,7 +18,7 @@ const boxesData = {
       .addNewItem(1, 15)
       .addNewItem(2, 15)
       .addNewItem(0, 15)
-      .addNewItem(5, 15)
+      .addNewItem(5, 16)
       .setIsActive()
       .setPrice(10),
   ],
