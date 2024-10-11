@@ -15,6 +15,7 @@ class UserData {
   inventory;
 
   constructor(userData, guildId) {
+    console.log("\n-|=================");
     this.id = userData.id;
     this.username = userData.username;
     this.globalName = userData.globalName;
@@ -22,39 +23,39 @@ class UserData {
     this.registerDate = new Date().getTime();
     this.guildId = guildId;
     this.inventory = [];
-
-    if (!this.#findUserDataById()) {
-      this.#save();
-    }
+    this.#findUserDataById()
   }
 
   #findUserDataById() {
+    console.log("-| #findUserDataById() ");
+    
     const loadedData = FileManager.load(`../DB/guilds/${this.guildId}/${this.id}/data.txt`);
     if (loadedData) { 
       this.balance = loadedData?.balance;
       this.registerDate = loadedData?.registerDate;
       this.guildId = loadedData?.guildId;
       this.inventory = loadedData?.inventory ?? [];
-      return true;
-    } else {
-      return false;
     }
   }
 
   #save() {
+    console.log("--| #save()");
     FileManager.save(`../DB/guilds/${this.guildId}/${this.id}/data.txt`, this);
   }
 
   hasBalance(requireBalance) {
+    console.log("-| hasBalance(requireBalance)");
     return this.balance >= requireBalance;
   }
 
   removeBalance(count) {
+    console.log("-| removeBalance(count)");
     this.balance -= count;
     this.#save();
   }
 
   addItem(itemId) {
+    console.log("-| addItem(itemId)");
     let isNewItem = true;
     const qualities = Item.quality;
 
@@ -111,8 +112,16 @@ class UserData {
     // Сохраняем изменения
     this.#save();
   }
+
+  addItemAndRemoveBalance(count, itemId) {
+    console.log("-| addItemAndRemoveBalance(count, itemId)");
+    
+    this.balance -= count;
+    this.addItem(itemId);
+  }
   
   removeItem(removingItemId) {
+    console.log("-| removeItem(removingItemId)");
     const userInventory = this.inventory;
     let removingItemInd = null;
     {
@@ -163,6 +172,7 @@ class UserData {
   }
 
   #removeItemsImportant(removingItemsId) {
+    console.log("-| #removeItemsImportant(removingItemsId)");
     const userInventory = this.inventory;
     const newInv = [];
 
@@ -186,20 +196,24 @@ class UserData {
   }
 
   incrementBalance() {
+    console.log("-| incrementBalance()");
     ++this.balance;
     this.#save();
   }
 
   upgradeItemByInd(itemInd) {
+    console.log("-| upgradeItemByInd(itemInd)");
     ++this.inventory[itemInd][2];
     this.#save();
   }
 
   removeItemCountByInd(itemId, count) {
+    console.log("-| removeItemCountByInd(itemId, count)");
     // TODO : implement. Return true(if returned) or false(if not returned)
   }
 
   async createInvImage() {
+    console.log("-| async createInvImage()");
     const inv = this.inventory;
     const itemsId = [];
     let line = [];

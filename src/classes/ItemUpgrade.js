@@ -17,7 +17,7 @@ class ItemUpgrade extends Item {
     return this;
   }
 
-  async createImage(upgradeLevel) {
+  async createImage(upgradeLevel = 1) {
     const upgrade = this.upgrades[upgradeLevel - 1];
     
     if (upgrade) {

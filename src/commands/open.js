@@ -29,9 +29,8 @@ module.exports = {
         const boxPrice = boxes[boxNumber].price;
         
 				if (!userData.hasBalance(boxPrice)) {
-					await interaction.editReply(`Этот ящик стоит ${boxPrice} монет.\n Тебе не хватает  ${boxPrice - userData.balance} монет.`);
+					await interaction.editReply(`Этот ящик стоит ${boxPrice} монет.\nУ тебя ${userData.balance} монет (не хватает  ${boxPrice - userData.balance}).`);
         } else {
-					userData.removeBalance(boxPrice);
           await openBox(interaction, boxes[boxNumber], userData);
         }
 
@@ -48,7 +47,7 @@ async function openBox(interaction, openBoxData, userData) {
 
   const generalItemData = getItemDataById(itemId);
   if (generalItemData) {
-    userData.addItem(itemId);
+    userData.addItemAndRemoveBalance(openBoxData.price, itemId);
   
     let imgBuffer = await ImgManager.extend(await generalItemData.createImage(), {top: 12, bottom: 11});
 

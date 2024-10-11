@@ -28,8 +28,8 @@ const itemsData = {
     // 10
     new ItemUpgrade("Роза", 500, Item.quality.elite)
       .addLevel(9, 1, "rose_level_1.png")
-      .addLevel(9, 3, "rose_level_2.png")
-      .addLevel(9, 5, "rose_level_3.png")
+      .addLevel(9, 2, "rose_level_2.png")
+      .addLevel(9, 4, "rose_level_3.png")
   ],
 
   // прокачиваемым предметам нельзя в магазин
