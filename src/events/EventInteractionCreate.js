@@ -1,10 +1,19 @@
+const processingUsers = new Set();
+
 module.exports = async function EventInteractionCreate(interaction, client) {
   // direct message check
   if (!interaction.member) {
-    await interaction.reply("Не работает в личных собщениях");
-    return;
+    return await interaction.reply("Не работает в личных собщениях");
   }
-  
+
+  // check user in processing
+  const userId = interaction.user.id;
+  if (processingUsers.has(userId)) {
+    return await interaction.reply({content: "Предыдущий запрос еще обрабатывается", ephemeral: true});
+  }
+
+  processingUsers.add(userId);
+
   // command
   if (interaction.isCommand()) {
     const command = client.commands.get(interaction.commandName);
@@ -24,4 +33,6 @@ module.exports = async function EventInteractionCreate(interaction, client) {
   else if (interaction.isButton()) {
     console.log("[Interaction:button]");
   }
+
+  processingUsers.delete(userId);
 }
