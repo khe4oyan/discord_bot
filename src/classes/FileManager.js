@@ -31,7 +31,7 @@ class FileManager {
   }
 
   static deleteDir(guildId) {
-    const guildPath = path.join(__dirname, `../DB/guilds/${guildId}`);
+    const guildPath = path.join(__dirname, `../../DB/guilds/${guildId}`);
     fs.rm(guildPath, { recursive: true, force: true}, () => {});
   }
 };

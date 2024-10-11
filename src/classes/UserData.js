@@ -27,7 +27,7 @@ class UserData {
   }
 
   #findUserDataById() {
-    const loadedData = FileManager.load(`../DB/guilds/${this.guildId}/${this.id}/data.txt`);
+    const loadedData = FileManager.load(`../../DB/guilds/${this.guildId}/${this.id}/data.txt`);
     if (loadedData) { 
       this.balance = loadedData?.balance;
       this.registerDate = loadedData?.registerDate;
@@ -37,7 +37,7 @@ class UserData {
   }
 
   #save() {
-    FileManager.save(`../DB/guilds/${this.guildId}/${this.id}/data.txt`, this);
+    FileManager.save(`../../DB/guilds/${this.guildId}/${this.id}/data.txt`, this);
   }
 
   hasBalance(requireBalance) {
@@ -156,7 +156,7 @@ class UserData {
     if (itemSold) {
       this.inventory = newInv;
       this.#save();
-      return `Предмет продан за ${returningMessage} монет`;
+      return `Предмет продан за ${returningMessage} монет \n-# /bal - чтобы узнать свой баланс`;
     } else {
       return "Указан неверный ID предмета.\n-# /inv - чтобы посмотреть свой инвентарь";
     }
@@ -197,6 +197,7 @@ class UserData {
 
   removeItemCountByInd(itemId, count) {
     // TODO : implement. Return true(if returned) or false(if not returned)
+    return true;
   }
 
   async createInvImage() {

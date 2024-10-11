@@ -14,7 +14,7 @@ module.exports = {
   ],
 
   async execute(interaction) {
-    await interaction.deferReply();
+    await interaction.deferReply({ ephemeral: true });
 
     const item_id = interaction.options.getInteger("item_id");
     const userData = new UserData(interaction.user, interaction.guildId);

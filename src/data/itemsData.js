@@ -23,7 +23,7 @@ const itemsData = {
     new Item("Кожаная куртка", 60, Item.quality.special, "kurtka.png"),
     new Item("Позолоченный браслет", 70, Item.quality.rare, "braslet.png"),
     new Item("Золотое кольцо", 100, Item.quality.rare, "kolco.png"),
-    new Item("Лепестки Розы", 100, Item.quality.rare, "rose_upgrader.png"),
+    new Item("Лепестки Розы", 120, Item.quality.rare, "rose_upgrader.png"),
 
     // 10
     new ItemUpgrade("Роза", 500, Item.quality.elite)

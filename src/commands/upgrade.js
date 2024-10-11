@@ -1,5 +1,7 @@
 const commandOptionTypes = require("../utils/commandOptionTypes");
 const UserData = require('../classes/UserData.js');
+const ImgManager = require('../classes/ImgManager.js');
+const path = require('path');
 const getItemDataById = require("../utils/getItemDataById");
 
 module.exports = {
@@ -52,8 +54,36 @@ module.exports = {
       return await interaction.editReply("Нет фрагментов для улучшения");
     }
 
+    // улучшение предмета
+  
+    // создание фона
+    let bgBuffer = await ImgManager.createImage(400, 200, '#123');
+    const bgMeta = await ImgManager.loadImg(bgBuffer).metadata();
+    
+    // изображение предмета до улучшения
+    const beforeUpgradeItemBuffer = await globalItemDate.createImage(userInv[itemInd][2]); 
+    // const beforeUpgradeItemMeta = await ImgManager.loadImg(beforeUpgradeItemBuffer).metadata();
+
     user.upgradeItemByInd(itemInd);
-    // TODO: create and send upgrade image
-    await interaction.editReply(`Предмет улучшен до ${userInv[itemInd][2]} уровня!`);
+
+    // изображение предмета после улучшения
+    const afterUpgradeItemBuffer = await globalItemDate.createImage(userInv[itemInd][2]); 
+    // const afterUpgradeItemMeta = await ImgManager.loadImg(afterUpgradeItemBuffer).metadata();
+    
+    // фрагмент для улучшения
+    const upgradeItemBuffer = await getItemDataById(upgradeItemId).createImage();
+    // const upgradeItemMeta = await ImgManager.loadImg(upgradeItemBuffer).metadata();
+
+    // стрелочка прокачки
+    const upgradeArrow = await ImgManager.loadImg(path.join(__dirname, `../assets/img/quality/arrow.png`)).toBuffer();
+
+    // добавить предметы до и после на фон
+    const imgMaxHeight = bgMeta.height * .8;
+    bgBuffer = await ImgManager.overlayImage(bgBuffer, beforeUpgradeItemBuffer, 25, 25, bgMeta.width, imgMaxHeight);
+    bgBuffer = await ImgManager.overlayImage(bgBuffer, afterUpgradeItemBuffer, bgMeta.width - 160, 25, bgMeta.width, imgMaxHeight);
+    bgBuffer = await ImgManager.overlayImage(bgBuffer, upgradeItemBuffer, 140, 130, bgMeta.width, bgMeta.height * .3);
+    bgBuffer = await ImgManager.overlayImage(bgBuffer, upgradeArrow, 170, 50, bgMeta.width, bgMeta.height * .25);
+    
+    await interaction.editReply({content: `# Предмет улучшен до ${userInv[itemInd][2]} уровня!`, files: [ImgManager.createAttachmentDiscord(bgBuffer)]});
   }
 };
