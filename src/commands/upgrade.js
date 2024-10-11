@@ -49,9 +49,13 @@ module.exports = {
     }
     
     // попытка удалить предмет для прокачки
-    const {upgradeItemId, upgradeItemCount} = globalItemDate.upgrades[userInv[itemInd][2] - 1];
-    if (!user.removeItemCountByInd(upgradeItemId, upgradeItemCount)) {
-      return await interaction.editReply("Нет фрагментов для улучшения");
+    const {upgradeItemId, upgradeItemCount} = globalItemDate.upgrades[userInv[itemInd][2]];
+    {
+      const result = user.removeItemCountById(upgradeItemId, upgradeItemCount);
+      if (!result) {
+        // TODO: тебе нужно собрать 10шт. этого предмета(ID: 9)
+        return await interaction.editReply("Нет фрагментов для улучшения");
+      }
     }
 
     // улучшение предмета
@@ -84,6 +88,6 @@ module.exports = {
     bgBuffer = await ImgManager.overlayImage(bgBuffer, upgradeItemBuffer, 140, 130, bgMeta.width, bgMeta.height * .3);
     bgBuffer = await ImgManager.overlayImage(bgBuffer, upgradeArrow, 170, 50, bgMeta.width, bgMeta.height * .25);
     
-    await interaction.editReply({content: `# Предмет улучшен до ${userInv[itemInd][2]} уровня!`, files: [ImgManager.createAttachmentDiscord(bgBuffer)]});
+    await interaction.editReply({content: `## Предмет улучшен до ${userInv[itemInd][2]} уровня!`, files: [ImgManager.createAttachmentDiscord(bgBuffer)]});
   }
 };

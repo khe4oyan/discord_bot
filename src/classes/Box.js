@@ -90,7 +90,7 @@ class Box {
         }
         
         const generalItemData = getItemDataById(itemIds[i]);
-
+        
         if (generalItemData) {
           line.push([generalItemData, prcentOfTotalChance]);
           if (line.length === maxItemsInLine) {

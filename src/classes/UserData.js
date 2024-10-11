@@ -89,7 +89,7 @@ class UserData {
           const newItemData = [itemId, 1];
 
           if (itemData.isUpgradeable) {
-            newItemData.push(1);
+            newItemData.push(0);
           }
           
           qualityArrays[itemData.type].push(newItemData); // Новый предмет с количеством 1
@@ -195,8 +195,18 @@ class UserData {
     this.#save();
   }
 
-  removeItemCountByInd(itemId, count) {
-    // TODO : implement. Return true(if returned) or false(if not returned)
+  removeItemCountById(itemId, count) {
+    // TODO 
+    const userInv = this.inventory;
+    
+    for (let i = 0; i < userInv.length; ++i) {
+      if (userInv[i][0] === itemId) {
+        if (userInv[i][1] < count) {
+          return false;
+        }
+      }
+    }
+
     return true;
   }
 
@@ -217,7 +227,7 @@ class UserData {
           
         const data = [generalItemData, count];
         // если предмет улучшаемый
-        if (upgradeLvl) { 
+        if (upgradeLvl > -1) { 
           data.push(upgradeLvl);
         }
 
@@ -264,7 +274,7 @@ class UserData {
         
         let itemBuffer = await itemData.createImage(upgradeLevel);
 
-        if (upgradeLevel) {
+        if (Number.isInteger(upgradeLevel)) {
           itemBuffer = await ImgManager.addTextToImage(itemBuffer, `lvl`, width - 13, 45, 22, itemData.type === Item.quality.ultimate ? "#000" : "#fffa", "end");
           itemBuffer = await ImgManager.addTextToImage(itemBuffer, (upgradeLevel === itemData.upgrades.length ? "M" : upgradeLevel), width - 13, 70, 20, itemData.type === Item.quality.ultimate ? "#000" : "#fffa", "end");
 
