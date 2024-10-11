@@ -1,10 +1,11 @@
-async function EventInteractionCreate(interaction, client) {
+module.exports = async function EventInteractionCreate(interaction, client) {
+  // direct message check
   if (!interaction.member) {
     await interaction.reply("Не работает в личных собщениях");
     return;
   }
   
-  // button
+  // command
   if (interaction.isCommand()) {
     const command = client.commands.get(interaction.commandName);
     if (!command) return;
@@ -24,5 +25,3 @@ async function EventInteractionCreate(interaction, client) {
     console.log("[Interaction:button]");
   }
 }
-
-module.exports = EventInteractionCreate;

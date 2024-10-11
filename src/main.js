@@ -19,19 +19,19 @@ const client = new Client({
 client.commands = new Collection();
 
 client.once(Events.ClientReady, async () => {
-  EventClientReady(client);
+  await EventClientReady(client);
 });
 
 client.on(Events.MessageCreate, async (message) => {
-  EventMessageCreate(message, client);
+  await EventMessageCreate(message, client);
 });
 
 client.on(Events.InteractionCreate, async (interaction) => {
-  EventInteractionCreate(interaction, client);
+  await EventInteractionCreate(interaction, client);
 });
 
 client.on(Events.GuildDelete, async (guildId) => {
-  EventGuildDelete(guildId);
+  await EventGuildDelete(guildId);
 });
 
 client.login(process.env.DISCORD_TOKEN);
