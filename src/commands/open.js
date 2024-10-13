@@ -31,7 +31,26 @@ module.exports = {
 				if (!userData.hasBalance(boxPrice)) {
 					await interaction.editReply(`Этот ящик стоит ${boxPrice} монет.\nУ тебя ${userData.balance} монет (не хватает  ${boxPrice - userData.balance}).`);
         } else {
-          await openBox(interaction, boxes[boxNumber], userData);
+          const box = boxes[boxNumber];
+          const boxCoolDownMinutes = box.coolDownMinutes
+          const CDKey = `${box.name}_${boxNumber}`;
+
+          if (boxCoolDownMinutes) {
+            const userOpeningCooldown = userData.loadBoxOpeningData();
+            if(userOpeningCooldown.hasOwnProperty(CDKey)) {
+              const timesDifference = new Date().getTime() - userOpeningCooldown[CDKey];
+              const coolDownMinutes = timesDifference / (1000 * 60);
+
+              if (coolDownMinutes < box.coolDownMinutes) {
+                return interaction.editReply(`Этот ящик можно открывать раз в ${box.coolDownMinutes} мин.\n Осталось ждать ${(box.coolDownMinutes - coolDownMinutes).toFixed(1)} мин.`);
+              }
+            }
+          
+            userOpeningCooldown[CDKey] = new Date().getTime();
+            userData.saveBoxOpeningData(userOpeningCooldown);
+          }
+
+          await openBox(interaction, box, userData);
         }
 
         return;

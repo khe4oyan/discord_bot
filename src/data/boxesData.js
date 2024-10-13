@@ -6,6 +6,7 @@ const boxesData = {
       .addNewItem(10, 11)
       .addNewItem(9, 100)
       .setAvailable(10, 12)
+      .setCoolDown(1)
       .setPrice(300),
 
     new Box("Ящик с барахлом")
@@ -17,6 +18,7 @@ const boxesData = {
       .addNewItem(1, 15)
       .addNewItem(2, 15)
       .addNewItem(0, 15)
+      .setCoolDown(.25)
       .setIsActive()
       .setPrice(10),
   ],

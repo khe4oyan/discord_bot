@@ -40,6 +40,15 @@ class UserData {
     FileManager.save(`../../DB/guilds/${this.guildId}/${this.id}/data.txt`, this);
   }
 
+  loadBoxOpeningData() {
+    const loadedData = FileManager.load(`../../DB/guilds/${this.guildId}/${this.id}/boxOpeningCoolDown.txt`);
+    return Object(loadedData);
+  }
+
+  saveBoxOpeningData(openingData) {
+    FileManager.save(`../../DB/guilds/${this.guildId}/${this.id}/boxOpeningCoolDown.txt`, openingData);
+  }
+
   hasBalance(requireBalance) {
     return this.balance >= requireBalance;
   }

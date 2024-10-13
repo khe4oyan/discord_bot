@@ -30,6 +30,7 @@ class Box {
 
   setCoolDown(cooldownMinutes) {
     this.coolDownMinutes = cooldownMinutes;
+    return this;
   }
 
   setAvailable(day, month, year = new Date().getFullYear()) {
@@ -159,17 +160,21 @@ class Box {
     background = await ImgManager.extend(background, {top: 14, left: 13, right: 13, bottom: 14});
     background = await ImgManager.extend(background, {top: 100}, this.headerColor);
 
+    const backgroundMeta = await ImgManager.loadImg(background).metadata();
     if (Number.isInteger(this.isActive)) {
       background = await ImgManager.extend(background, {top: 35}, this.headerColor);
-      const backgroundMeta = await ImgManager.loadImg(background).metadata();
       background = await ImgManager.addTextToImage(background, `————————`, 30, 85, 35, this.headerTitleColor);
       background = await ImgManager.addTextToImage(background, `————————| осталось ${this.isActive} дн.`, backgroundMeta.width - 30, 85, 35, this.headerTitleColor, 'end');
     }
 
     const backgroundMetaData = await ImgManager.loadImg(background).metadata();
     background = await ImgManager.addTextToImage(background, this.name, 30, 0, 50, this.headerTitleColor);
-    background = await ImgManager.addTextToImage(background, `можно открыть за ${this.price} монет`, 30, 50, 35, this.headerTitleColor);
     background = await ImgManager.addTextToImage(background, `ID: ${this.id}`, backgroundMetaData.width - 30, 0, 50, this.headerTitleColor, "end");
+    background = await ImgManager.addTextToImage(background, `можно открыть за ${this.price} монет`, 30, 50, 35, this.headerTitleColor);
+    
+    if (this.coolDownMinutes) {
+      background = await ImgManager.addTextToImage(background, `кд ${this.coolDownMinutes} мин.`, backgroundMeta.width - 30, 50, 35, this.headerTitleColor, "end");
+    }
     
     return background;
   }
