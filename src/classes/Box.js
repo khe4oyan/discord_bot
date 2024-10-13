@@ -145,7 +145,7 @@ class Box {
       background = await ImgManager.extend(background, {top: 35}, this.headerColor);
       const backgroundMeta = await ImgManager.loadImg(background).metadata();
       background = await ImgManager.addTextToImage(background, `————————`, 30, 85, 35, this.headerTitleColor);
-      background = await ImgManager.addTextToImage(background, `————————| осталось ${this.isActive}дн.`, backgroundMeta.width - 30, 85, 35, this.headerTitleColor, 'end');
+      background = await ImgManager.addTextToImage(background, `————————| осталось ${this.isActive} дн.`, backgroundMeta.width - 30, 85, 35, this.headerTitleColor, 'end');
     }
 
     const backgroundMetaData = await ImgManager.loadImg(background).metadata();
