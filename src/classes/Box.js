@@ -12,6 +12,7 @@ class Box {
   headerColor;
   headerTitleColor;
   availableBefore;
+  coolDown;
   
   static indexCounter = 0;
 
@@ -24,10 +25,32 @@ class Box {
     this.headerColor = headerColor;
     this.headerTitleColor = headerTitleColor;
     this.availableBefore = null;
+    this.coolDownMinutes = null;
+  }
+
+  setCoolDown(cooldownMinutes) {
+    this.coolDownMinutes = cooldownMinutes;
+  }
+
+  setAvailable(day, month, year = new Date().getFullYear()) {
+    this.availableBefore = new Date(`${month}.${day + 1}.${year}`);
+    const differenceTime = this.availableBefore - new Date();
+    const differenceDays = Math.round(differenceTime / (1000 * 3600 * 24));
+
+    if (differenceDays > 0) {
+      this.isActive = differenceDays;
+    }
+
+    return this;
   }
 
   setPrice(price) {
     this.price = price;
+    return this;
+  }
+
+  setIsActive() {
+    this.isActive = true;
     return this;
   }
 
@@ -62,11 +85,6 @@ class Box {
         return itemIds[randomIndex];
       }
     }
-  }
-
-  setIsActive() {
-    this.isActive = true;
-    return this;
   }
 
   async createImage() {
@@ -159,18 +177,6 @@ class Box {
   async createAttachment() {
     const finalImage = await this.createImage();
     return ImgManager.createAttachmentDiscord(finalImage);
-  }
-
-  setAvailable(day, month, year = new Date().getFullYear()) {
-    this.availableBefore = new Date(`${month}.${day + 1}.${year}`);
-    const differenceTime = this.availableBefore - new Date();
-    const differenceDays = Math.round(differenceTime / (1000 * 3600 * 24));
-
-    if (differenceDays > 0) {
-      this.isActive = differenceDays;
-    }
-
-    return this;
   }
 }
 
