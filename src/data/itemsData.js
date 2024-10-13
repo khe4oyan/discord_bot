@@ -32,7 +32,7 @@ const itemsData = {
   ],
 
   // прокачиваемым предметам нельзя в магазин
-  shop: [9, 8, 7, 6],
+  shop: [10, 9, 8, 7, 6],
 };
 
 module.exports = itemsData;

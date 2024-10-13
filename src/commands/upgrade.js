@@ -52,9 +52,16 @@ module.exports = {
     const {upgradeItemId, upgradeItemCount} = globalItemDate.upgrades[userInv[itemInd][2]];
     {
       const result = user.removeItemCountById(upgradeItemId, upgradeItemCount);
+      console.log(result, upgradeItemId, upgradeItemCount);
       if (!result) {
-        // TODO: тебе нужно собрать 10шт. этого предмета(ID: 9)
-        return await interaction.editReply("Нет фрагментов для улучшения");
+        const upgradeItemData = getItemDataById(upgradeItemId);
+        
+        let resultText = `Недостаточно фрагментов для улучшения.\n`;
+        resultText += `Для следующего уровня нужно ${upgradeItemCount} шт. этого предмета.\n`;
+        resultText += `### ${upgradeItemData.name} (ID: ${upgradeItemId})\n`;
+        
+        const upgradeItemImg = await upgradeItemData.createAttachment();
+        return await interaction.editReply({content: resultText, files: [upgradeItemImg]});
       }
     }
 

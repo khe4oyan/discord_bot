@@ -196,18 +196,31 @@ class UserData {
   }
 
   removeItemCountById(itemId, count) {
-    // TODO 
     const userInv = this.inventory;
+    const newInv = [];
+
+    let isItemValid = false;
     
     for (let i = 0; i < userInv.length; ++i) {
       if (userInv[i][0] === itemId) {
+
         if (userInv[i][1] < count) {
-          return false;
+          break;
+        } else {
+          if (userInv[i][1] > count) {
+            userInv[i][1] -= count;
+            newInv.push(userInv[i]);
+          }
+          isItemValid = true;
         }
+      } else {
+        newInv.push(userInv[i]);
       }
     }
 
-    return true;
+    this.inventory = newInv;
+    this.#save();
+    return isItemValid;
   }
 
   async createInvImage() {
