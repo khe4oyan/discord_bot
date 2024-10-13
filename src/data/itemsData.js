@@ -29,7 +29,7 @@ const itemsData = {
     new Item("Лепестки Розы", 120, Item.quality.rare, "rose_upgrader.png"),
 
     // 10 - id
-    new ItemUpgrade("Роза", 500, Item.quality.elite, "rose_level_0.png")
+    new ItemUpgrade("Роза", 500, Item.quality.elite, "rose_level.png")
       .addLevel(9, 1, "rose_level_1.png")
       .addLevel(9, 2, "rose_level_2.png")
   ],
