@@ -52,7 +52,6 @@ module.exports = {
     const {upgradeItemId, upgradeItemCount} = globalItemDate.upgrades[userInv[itemInd][2]];
     {
       const result = user.removeItemCountById(upgradeItemId, upgradeItemCount);
-      console.log(result, upgradeItemId, upgradeItemCount);
       if (!result) {
         const upgradeItemData = getItemDataById(upgradeItemId);
         
@@ -94,7 +93,16 @@ module.exports = {
     bgBuffer = await ImgManager.overlayImage(bgBuffer, afterUpgradeItemBuffer, bgMeta.width - 160, 25, bgMeta.width, imgMaxHeight);
     bgBuffer = await ImgManager.overlayImage(bgBuffer, upgradeItemBuffer, 140, 130, bgMeta.width, bgMeta.height * .3);
     bgBuffer = await ImgManager.overlayImage(bgBuffer, upgradeArrow, 170, 50, bgMeta.width, bgMeta.height * .25);
+
     
-    await interaction.editReply({content: `## Предмет улучшен до ${userInv[itemInd][2]} уровня!`, files: [ImgManager.createAttachmentDiscord(bgBuffer)]});
+    let resultText = `## Предмет улучшен до ${userInv[itemInd][2]} уровня!\n`;
+
+    if (upgradeItemCount === 1) {
+      resultText += `Был использован ${upgradeItemCount} фрагмент для прокачки этого предмета.`;
+    } else {
+      resultText += `Было использовано ${upgradeItemCount} фрагмента для прокачки этого предмета.`;
+    }
+
+    await interaction.editReply({content: resultText, files: [ImgManager.createAttachmentDiscord(bgBuffer)]});
   }
 };
