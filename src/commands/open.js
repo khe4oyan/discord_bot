@@ -33,20 +33,19 @@ module.exports = {
         } else {
           const box = boxes[boxNumber];
           const boxCoolDownMinutes = box.coolDownMinutes
-          const CDKey = `${box.name}_${boxNumber}`;
 
           if (boxCoolDownMinutes) {
             const userOpeningCooldown = userData.loadBoxOpeningData();
-            if(userOpeningCooldown.hasOwnProperty(CDKey)) {
-              const timesDifference = new Date().getTime() - userOpeningCooldown[CDKey];
+            if(userOpeningCooldown.hasOwnProperty(boxNumber)) {
+              const timesDifference = new Date().getTime() - userOpeningCooldown[boxNumber];
               const coolDownMinutes = timesDifference / (1000 * 60);
 
               if (coolDownMinutes < box.coolDownMinutes) {
-                return interaction.editReply(`Этот ящик можно открывать раз в ${box.coolDownMinutes} мин.\n Осталось ждать ${(box.coolDownMinutes - coolDownMinutes).toFixed(1)} мин.`);
+                return interaction.editReply(`Этот ящик можно открывать не чаще чем раз в ${box.coolDownMinutes} мин.\n Осталось ждать ${(box.coolDownMinutes - coolDownMinutes).toFixed(1)} мин.`);
               }
             }
           
-            userOpeningCooldown[CDKey] = new Date().getTime();
+            userOpeningCooldown[boxNumber] = new Date().getTime();
             userData.saveBoxOpeningData(userOpeningCooldown);
           }
 

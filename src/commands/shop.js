@@ -9,6 +9,10 @@ module.exports = {
   name: "shop",
   description: "Показать какие предметы в продаже",
   async execute(interaction) {
+    if (shop.length === 0) { 
+      return await interaction.reply("В магазине пока ничего нет. \nЖдем пока завезут.");
+    }
+
     await interaction.deferReply();
 
     const itemsId = [];
