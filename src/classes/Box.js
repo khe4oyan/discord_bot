@@ -35,7 +35,7 @@ class Box {
     return this;
   }
 
-  setAvailable(day, month, year = new Date().getFullYear()) {
+  setAvailableBefore(day, month, year = new Date().getFullYear()) {
     this.availableBefore = new Date(`${month}.${day + 1}.${year}`);
     const differenceTime = this.availableBefore - new Date();
     const differenceDays = Math.round(differenceTime / (1000 * 3600 * 24));
@@ -99,16 +99,33 @@ class Box {
   }
 
   async createOnlyOneItemImg() { 
-    // TODO
-    return await this.createFullInnerItems();
-  }
-
-  async createFullInnerItems() {
-    // calculate max chance
     const maxItemsInLine = 4;
     const itemsId = this.#getDropableItemsIds(maxItemsInLine);
 
-    // get item image width, height
+    const { width } = await this.#getItemImageSizes(itemsId[0][0][0]);
+    const height = 300;
+
+    const gap = 10;
+    const [colls, rows] = this.#calculateCollsAndRows(itemsId, maxItemsInLine, gap, width, height);
+
+    let background = await ImgManager.createImage(colls, rows, "#0000");
+    const [
+      itemData, 
+      // itemDropChance
+    ] = itemsId[0][0];
+
+    const itemImg = await itemData.createImage();
+    
+    background = await ImgManager.overlayImage(background, itemImg, Math.floor(width / 2), Math.floor(height / 2), 200, 200)
+    background = await this.#createBoxHeader(background);
+    
+    return background;
+  }
+
+  async createFullInnerItems() {
+    const maxItemsInLine = 4;
+    const itemsId = this.#getDropableItemsIds(maxItemsInLine);
+
     const { width, height } = await this.#getItemImageSizes(itemsId[0][0][0]);
 
     const gap = 10;

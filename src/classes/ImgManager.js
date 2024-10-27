@@ -52,12 +52,6 @@ class ImgManager {
   static loadImg(imagePath) {
     return sharp(imagePath);
   }
-  
-  static async joinTwoImg(baseImageBuffer, overlayImageBuffer) {
-    return baseImageBuffer
-    .composite([{ input: overlayImageBuffer, gravity: "center" }])
-    .toBuffer();
-  }
  
   /**
    * Создает attachment для отправки изображения пользователю
