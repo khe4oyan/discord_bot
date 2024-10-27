@@ -92,20 +92,13 @@ class Box {
   
   async createImage() {
     switch(this.showBoxNumber) {
-      case 1: {
-        return await this.createFullInnerItems();
-      }
-      case 2: {
-        return await this.createOnlyOneItemImg();
-      }
-      default: {
-        return await this.createFullInnerItems();
-      }
+      case 0: { return await this.createFullInnerItems(); }
+      case 1: { return await this.createOnlyOneItemImg(); }
+      default: { return await this.createFullInnerItems(); }
     }
   }
 
   async createOnlyOneItemImg() { 
-    
     // TODO
     return await this.createFullInnerItems();
   }
