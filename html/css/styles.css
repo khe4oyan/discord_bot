@@ -1,0 +1,79 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+body {
+  min-height: 100dvh;
+  background: linear-gradient(rgb(0, 12, 11), rgb(4, 43, 46));
+  color: white;
+  padding: 10px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .status {
+    --size: 20px;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+    padding: 10px;
+    background-color: gray;
+
+    &.enable {
+      background-color: rgb(71, 211, 69);
+    }
+    &.disable {
+      background-color: rgb(211, 69, 69);
+    }
+  }
+}
+
+input {
+  margin-top: 10px;
+  border-radius: 5px;
+  padding: 10px 20px;
+  outline: none;
+  border: none;
+}
+
+.buttons {
+  margin-top: 20px;
+
+  button {
+    border-radius: 5px;
+    outline: none;
+    padding: 10px 20px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.997);
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+
+    &:disabled {
+      opacity: .8;
+    }
+  }
+}
+
+.console {
+  margin-top: 2rem;
+  height: 80dvh;
+  overflow-y: auto;
+
+  .log {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 5px 10px;
+    margin-top: 5px;
+    border-left: 1px solid;
+
+    &.default {color: white;}
+    &.warn {color: rgb(205, 161, 78);}
+    &.done {color: rgb(71, 211, 69);}
+    &.fail {color: rgb(211, 69, 69);}
+  }
+}
