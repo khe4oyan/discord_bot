@@ -13,10 +13,11 @@ class Box {
   headerTitleColor;
   availableBefore;
   coolDown;
+  showBoxNumber;
   
   static indexCounter = 0;
 
-  constructor(boxName, headerColor = "#4C4E53", headerTitleColor = "#fff") {
+  constructor(boxName, showBoxNumber, headerColor = "#4C4E53", headerTitleColor = "#fff") {
     this.id = Box.indexCounter++;
     this.name = boxName;
     this.price = 0;
@@ -26,6 +27,7 @@ class Box {
     this.headerTitleColor = headerTitleColor;
     this.availableBefore = null;
     this.coolDownMinutes = null;
+    this.showBoxNumber = showBoxNumber;
   }
 
   setCoolDown(cooldownMinutes) {
@@ -87,20 +89,61 @@ class Box {
       }
     }
   }
-
+  
   async createImage() {
+    switch(this.showBoxNumber) {
+      case 1: {
+        return await this.createFullInnerItems();
+      }
+      case 2: {
+        return await this.createOnlyOneItemImg();
+      }
+      default: {
+        return await this.createFullInnerItems();
+      }
+    }
+  }
+
+  async createOnlyOneItemImg() { 
+    
+    // TODO
+    return await this.createFullInnerItems();
+  }
+
+  async createFullInnerItems() {
     // calculate max chance
+    const maxItemsInLine = 4;
+    const itemsId = this.#getDropableItemsIds(maxItemsInLine);
+
+    // get item image width, height
+    const { width, height } = await this.#getItemImageSizes(itemsId[0][0][0]);
+
+    const gap = 10;
+    const [colls, rows] = this.#calculateCollsAndRows(itemsId, maxItemsInLine, gap, width, height);
+
+    let background = await ImgManager.createImage(colls, rows, "#0000");
+    background = await this.#createDropableItemsImg(background, itemsId, width, height, gap);
+    background = await this.#createBoxHeader(background);
+    
+    return background;
+  }
+
+  #calculateTotalChance() {
     let totalChance = 0;
+
     for (let [chance, itemIds] of this.items.entries()) {
       totalChance += chance * itemIds.length;
     }
 
-    const maxItemsInLine = 4;
+    return totalChance;
+  }
 
-    // get items id
+  #getDropableItemsIds(maxItemsInLine) {
     const itemsId = [];
     let line = [];
-    
+
+    let totalChance = this.#calculateTotalChance();
+
     for (let [chance, itemIds] of this.items.entries()) {
       for (let i = 0; i < itemIds.length; ++i) {
         let prcentOfTotalChance = +((chance * 100) / totalChance).toFixed(2);
@@ -125,18 +168,15 @@ class Box {
       line = [];
     }
     
-    // get item image width, height
-    const {width, height} = await (async () => {
-      const image = await itemsId[0][0][0].createImage();
-      return ImgManager.loadImg(image).metadata();
-    })()
+    return itemsId;
+  }
 
-    const gap = 10;
-    const colls = ((width * maxItemsInLine) + (maxItemsInLine * gap));
-    const rows = (height * itemsId.length + (itemsId.length * gap));
+  async #getItemImageSizes(item) {
+    const image = await item.createImage();
+    return ImgManager.loadImg(image).metadata();
+  }
 
-    let background = await ImgManager.createImage(colls, rows, "#0000");
-    
+  async #createDropableItemsImg(background, itemsId, width, height, gap) {
     for (let i = 0; i < itemsId.length; ++i) {
       for (let j = 0; j < itemsId[i].length; ++j) {
         const [itemData, chance] = itemsId[i][j];
@@ -157,6 +197,10 @@ class Box {
       }
     }
 
+    return background;
+  }
+
+  async #createBoxHeader(background) {
     background = await ImgManager.extend(background, {top: 14, left: 13, right: 13, bottom: 14});
     background = await ImgManager.extend(background, {top: 100}, this.headerColor);
 
@@ -175,8 +219,15 @@ class Box {
     if (this.coolDownMinutes) {
       background = await ImgManager.addTextToImage(background, `кд ${this.coolDownMinutes} мин.`, backgroundMeta.width - 30, 50, 35, this.headerTitleColor, "end");
     }
-    
+
     return background;
+  }
+
+  #calculateCollsAndRows(itemsId, maxItemsInLine, gap, width, height) { 
+    const colls = ((width * maxItemsInLine) + (maxItemsInLine * gap));
+    const rows = (height * itemsId.length + (itemsId.length * gap));
+
+    return [colls, rows];
   }
 
   async createAttachment() {
