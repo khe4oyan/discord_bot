@@ -47,7 +47,6 @@ class ImgManager {
       .png()
       .toBuffer();
   }
-
   
   static loadImg(imagePath) {
     return sharp(imagePath);
@@ -111,6 +110,71 @@ class ImgManager {
       console.error("Ошибка при добавлении текста:", err);
       throw err;
     }
+  }
+
+  static async #addGradientToImage(imageBuffer, defs){ 
+    try {
+      const bgMetaData = await sharp(imageBuffer).metadata();
+
+      const svgGradient = `
+        <svg width="${bgMetaData.width}" height="${bgMetaData.height}">
+          ${defs}
+          <rect width="${bgMetaData.width}" height="${bgMetaData.height}" fill="url(#grad1)" />
+        </svg>
+      `;
+
+      return sharp(imageBuffer)
+        .composite([
+          {
+            input: Buffer.from(svgGradient),
+            top: 0,
+            left: 0,
+          },
+        ])
+        .png()
+        .toBuffer();
+    } catch (err) {
+      console.error("Ошибка при добавлении текста:", err);
+      throw err;
+    }
+  }
+
+  /**
+   * Добавляет градиент к изображению в полный экран.
+   *
+   * @param {Buffer} imageBuffer - Буфер изображения, к которому нужно добавить текст.
+   * @param {string} [color="red"] - Цвет текста (по умолчанию белый).
+   * @param {string} [color2="blue"] - Положение текста относительно координаты X (например, "start", "middle", "end").
+   * @returns {Promise<Buffer>} - Возвращает новый буфер изображения с добавленным текстом.
+   */
+  static async addLinearGradientToImage(imageBuffer, color = "red", color2 = "blue") {
+    return await ImgManager.#addGradientToImage(imageBuffer, `
+      <defs>
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:${color};stop-opacity:1" />
+          <stop offset="100%" style="stop-color:${color2};stop-opacity:1" />
+        </linearGradient>
+      </defs>
+    `);
+  }
+
+  /**
+   * Добавляет градиент к изображению в полный экран.
+   *
+   * @param {Buffer} imageBuffer - Буфер изображения, к которому нужно добавить текст.
+   * @param {string} [color="red"] - Цвет текста (по умолчанию белый).
+   * @param {string} [color2="blue"] - Положение текста относительно координаты X (например, "start", "middle", "end").
+   * @returns {Promise<Buffer>} - Возвращает новый буфер изображения с добавленным текстом.
+  */
+  static async addRadialGradientToImage(imageBuffer, color = "red", color2 = "blue", posX = '50', posY = '50') {
+    return await ImgManager.#addGradientToImage(imageBuffer,`
+      <defs>
+        <radialGradient id="grad1" cx="${posX}%" cy="${posY}%" r="50%" fx="${posX}%" fy="${posY}%" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" style="stop-color:${color};stop-opacity:1" />
+          <stop offset="100%" style="stop-color:${color2};stop-opacity:1" />
+        </radialGradient>
+      </defs>
+    `)
   }
 
   static async extend(imgBuffer, sides, background = "#0000") {

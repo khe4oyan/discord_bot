@@ -93,20 +93,20 @@ class Box {
   async createImage() {
     switch(this.showBoxNumber) {
       case 0: { return await this.createFullInnerItems(); }
-      case 1: { return await this.createOnlyOneItemImg(); }
+      case 1: { return await this.createMainItemImg(); }
       default: { return await this.createFullInnerItems(); }
     }
   }
 
-  async createOnlyOneItemImg() { 
+  async createMainItemImg() { 
     const maxItemsInLine = 4;
     const itemsId = this.#getDropableItemsIds(maxItemsInLine);
 
     const { width } = await this.#getItemImageSizes(itemsId[0][0][0]);
     const height = 300;
 
-    const gap = 10;
-    const [colls, rows] = this.#calculateCollsAndRows(itemsId, maxItemsInLine, gap, width, height);
+    const colls = 834;
+    const rows = 310;
 
     let background = await ImgManager.createImage(colls, rows, "#0000");
     const [
@@ -114,12 +114,43 @@ class Box {
       // itemDropChance
     ] = itemsId[0][0];
 
-    const itemImg = await itemData.createImage();
+    let upgadeLevel = 0;
+    if (itemData.isUpgradeable) {
+      upgadeLevel = itemData.upgrades.length;
+    }
+
+    const itemImg = await itemData.createImage(upgadeLevel);
     
-    background = await ImgManager.overlayImage(background, itemImg, Math.floor(width / 2), Math.floor(height / 2), 200, 200)
-    background = await this.#createBoxHeader(background);
-    
+    const thisHeaderColor = this.#getDarkHeaderColor(.7);
+
+    background = await ImgManager.addRadialGradientToImage(background, this.headerColor, thisHeaderColor, 50, 50);
+    // background = await ImgManager.addLinearGradientToImage(background, thisHeaderColor, this.headerColor);
+    background = await ImgManager.overlayImage(background, itemImg, 300, 25, width + 30, height + 30)
+    background = await this.#createBoxHeader(background, false);
+
     return background;
+  }
+
+  #getDarkHeaderColor(percent) {
+    const hex = this.headerColor.replace(/^#/, '');
+    // Преобразуем шестнадцатеричный код в RGB
+    let r = parseInt(hex.substring(0, 2), 16);
+    let g = parseInt(hex.substring(2, 4), 16);
+    let b = parseInt(hex.substring(4, 6), 16);
+
+    // Затемняем каждый компонент цвета
+    r = Math.floor(r * (1 - percent));
+    g = Math.floor(g * (1 - percent));
+    b = Math.floor(b * (1 - percent));
+
+    // Собираем новый цвет обратно в шестнадцатеричном формате
+    const darkenedHex = '#' + 
+        ((1 << 24) + (r << 16) + (g << 8) + b)
+        .toString(16)
+        .slice(1)
+        .toUpperCase();
+
+    return darkenedHex;
   }
 
   async createFullInnerItems() {
@@ -132,6 +163,7 @@ class Box {
     const [colls, rows] = this.#calculateCollsAndRows(itemsId, maxItemsInLine, gap, width, height);
 
     let background = await ImgManager.createImage(colls, rows, "#0000");
+    background = await ImgManager.addLinearGradientToImage(background, "#000", this.headerColor);
     background = await this.#createDropableItemsImg(background, itemsId, width, height, gap);
     background = await this.#createBoxHeader(background);
     
@@ -210,8 +242,8 @@ class Box {
     return background;
   }
 
-  async #createBoxHeader(background) {
-    background = await ImgManager.extend(background, {top: 14, left: 13, right: 13, bottom: 14});
+  async #createBoxHeader(background, padding = true) {
+    background = await ImgManager.extend(background, {top: padding ? 14 : 0, bottom: 14});
     background = await ImgManager.extend(background, {top: 100}, this.headerColor);
 
     const backgroundMeta = await ImgManager.loadImg(background).metadata();
@@ -234,7 +266,7 @@ class Box {
   }
 
   #calculateCollsAndRows(itemsId, maxItemsInLine, gap, width, height) { 
-    const colls = ((width * maxItemsInLine) + (maxItemsInLine * gap));
+    const colls = ((width * maxItemsInLine) + (maxItemsInLine * gap)) - gap;
     const rows = (height * itemsId.length + (itemsId.length * gap));
 
     return [colls, rows];

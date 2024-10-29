@@ -125,7 +125,7 @@ app.listen(port, () => {
 });
 
 function passValidation(password, res) {
-  if (password !== "nerusnotfound") {
+  if (password !== process.env.PASSWORD) {
     res.send({ status: 444, message: "Invalid password" });
     return false;
   }
