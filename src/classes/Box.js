@@ -102,8 +102,7 @@ class Box {
     const maxItemsInLine = 4;
     const itemsId = this.#getDropableItemsIds(maxItemsInLine);
 
-    const { width } = await this.#getItemImageSizes(itemsId[0][0][0]);
-    const height = 300;
+    const { width, height } = await this.#getItemImageSizes(itemsId[0][0][0]);
 
     const colls = 834;
     const rows = 310;
@@ -123,9 +122,12 @@ class Box {
     
     const thisHeaderColor = this.#getDarkHeaderColor(.7);
 
-    background = await ImgManager.addRadialGradientToImage(background, this.headerColor, thisHeaderColor, 50, 50);
-    // background = await ImgManager.addLinearGradientToImage(background, thisHeaderColor, this.headerColor);
-    background = await ImgManager.overlayImage(background, itemImg, 300, 25, width + 30, height + 30)
+    background = await ImgManager.addRadialGradientToImage(background, this.headerColor, thisHeaderColor, 80, 50);
+    background = await ImgManager.overlayImage(background, itemImg, 550, 25, width + 30, height + 30)
+    background = await ImgManager.addTextToImage(background, 'ГЛАВНЫЙ', 20, 10, 100, this.headerTitleColor);    
+    background = await ImgManager.addTextToImage(background, 'ПРИЗ', 20, 110, 100, this.headerTitleColor);    
+    background = await ImgManager.addTextToImage(background, '————', 20, 180, 100, this.headerTitleColor);    
+    background = await ImgManager.addTextToImage(background, '>', 380, 190, 100, this.headerTitleColor);    
     background = await this.#createBoxHeader(background, false);
 
     return background;
@@ -267,7 +269,7 @@ class Box {
 
   #calculateCollsAndRows(itemsId, maxItemsInLine, gap, width, height) { 
     const colls = ((width * maxItemsInLine) + (maxItemsInLine * gap)) - gap;
-    const rows = (height * itemsId.length + (itemsId.length * gap));
+    const rows = (height * itemsId.length + (itemsId.length * gap)) - gap;
 
     return [colls, rows];
   }
