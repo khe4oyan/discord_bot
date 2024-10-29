@@ -127,7 +127,6 @@ class Box {
     background = await ImgManager.addTextToImage(background, 'ГЛАВНЫЙ', 20, 10, 100, this.headerTitleColor);    
     background = await ImgManager.addTextToImage(background, 'ПРИЗ', 20, 110, 100, this.headerTitleColor);    
     background = await ImgManager.addTextToImage(background, '————', 20, 180, 100, this.headerTitleColor);    
-    background = await ImgManager.addTextToImage(background, '>', 380, 190, 100, this.headerTitleColor);    
     background = await this.#createBoxHeader(background, false);
 
     return background;
