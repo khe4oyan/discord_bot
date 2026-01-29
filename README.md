@@ -45,12 +45,21 @@ A feature-rich Discord bot designed to increase server engagement through a "cha
 3. **Configuration**
 Rename `.env-example` to `.env` and add your credentials:
 ```
-  TOKEN=your_discord_bot_token
-  CLIENT_ID=your_bot_id
+  DISCORD_TOKEN=your_discord_bot_token
+  IS_LOCAL= 0 || 1
+  OWNER_ID=your_account_id
+  SQL_HOST=host
+  SQL_DB_NAME=db_name
+  SQL_USER=user_name
+  SQL_PASSWORD=sql_password
 ```
 
 4. **Run**
 ```bash
+  # Initialize database
+  npm run init
+
+  # Run bot
   npm start
 ```
 

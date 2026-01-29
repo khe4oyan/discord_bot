@@ -1,5 +1,6 @@
-const processingUsers = new Set();
 const commandsReader = require("../utils/commandsReader.js");
+
+const processingUsers = new Set();
 
 module.exports = async function EventInteractionCreate(interaction) {  
   // direct message check

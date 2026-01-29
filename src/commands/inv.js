@@ -1,4 +1,3 @@
-const UserData = require("../classes/UserData.js");
 const ImgManager = require("../classes/ImgManager.js");
 
 module.exports = {
@@ -6,7 +5,8 @@ module.exports = {
 	description: 'Показать инвентарь',
 	async execute(interaction) {
 		await interaction.deferReply();
-		const user = new UserData(interaction.user, interaction.guildId);
+		// TODO: get inventory by interaction.user.id
+		const user = null;
 
 		if (user.inventory.length > 0) {
 			const invImage = await user.createInvImage();

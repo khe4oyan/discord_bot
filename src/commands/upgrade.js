@@ -1,5 +1,4 @@
 const commandOptionTypes = require("../utils/commandOptionTypes");
-const UserData = require('../classes/UserData.js');
 const ImgManager = require('../classes/ImgManager.js');
 const path = require('path');
 const getItemDataById = require("../utils/getItemDataById");
@@ -19,7 +18,8 @@ module.exports = {
   async execute(interaction) {
     await interaction.deferReply();
     const upgradableItemId = interaction.options.getInteger("item_id");
-    const user = new UserData(interaction.user, interaction.guildId);
+    // TODO: get user data
+    const user = null;
     const userInv = user.inventory;
 
     // ищем индекс улучшаемого предмета в инвентаре

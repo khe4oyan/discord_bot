@@ -1,4 +1,3 @@
-const UserData = require("../classes/UserData.js");
 const ImgManager = require("../classes/ImgManager.js");
 const commandOptionTypes = require("../utils/commandOptionTypes.js");
 const boxesData = require("../data/boxesData.js");
@@ -25,30 +24,14 @@ module.exports = {
     for (let i = 0; i < boxes.length; ++i) {
       if (boxes[i].id === boxNumber) {
         if (!boxes[i].isActive) { continue; }
-        const userData = new UserData(interaction.user, interaction.guildId);
+        // TODO: get userData by interaction.user.id
+        const userData = null;
         const boxPrice = boxes[boxNumber].price;
         
 				if (!userData.hasBalance(boxPrice)) {
 					await interaction.editReply(`Этот ящик стоит ${boxPrice} монет.\nУ тебя ${userData.balance} монет (не хватает  ${boxPrice - userData.balance}).`);
         } else {
           const box = boxes[boxNumber];
-          const boxCoolDownMinutes = box.coolDownMinutes
-
-          if (boxCoolDownMinutes) {
-            const userOpeningCooldown = userData.loadBoxOpeningData();
-            if(userOpeningCooldown.hasOwnProperty(boxNumber)) {
-              const timesDifference = new Date().getTime() - userOpeningCooldown[boxNumber];
-              const coolDownMinutes = timesDifference / (1000 * 60);
-
-              if (coolDownMinutes < box.coolDownMinutes) {
-                return interaction.editReply(`Этот ящик можно открывать не чаще чем раз в ${box.coolDownMinutes} мин.\n Осталось ждать ${(box.coolDownMinutes - coolDownMinutes).toFixed(1)} мин.`);
-              }
-            }
-          
-            userOpeningCooldown[boxNumber] = new Date().getTime();
-            userData.saveBoxOpeningData(userOpeningCooldown);
-          }
-
           await openBox(interaction, box, userData);
         }
 

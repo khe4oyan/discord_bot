@@ -240,7 +240,7 @@ class UserData {
 
     const removingItemsId = [];
     
-   for (let [itemId, count, upgradeLvl] of inv) {
+    for (let [itemId, count, upgradeLvl] of inv) {
       let isRemovingItem = true;
 
       const generalItemData = getItemDataById(itemId);

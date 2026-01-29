@@ -1,5 +1,4 @@
 const commandOptionTypes = require("../utils/commandOptionTypes.js");
-const UserData = require('../classes/UserData.js');
 
 module.exports = {
   name: "sell",
@@ -17,7 +16,8 @@ module.exports = {
     await interaction.deferReply({ ephemeral: true });
 
     const item_id = interaction.options.getInteger("item_id");
-    const userData = new UserData(interaction.user, interaction.guildId);
+    // TODO: get user data and remove item from inventory
+    const userData = null;
     const replyMessage = userData.removeItem(item_id);
 
     await interaction.editReply(replyMessage);

@@ -1,6 +1,5 @@
 const commandOptionTypes = require("../utils/commandOptionTypes.js");
 const {shop} = require("../data/itemsData.js");
-const UserData = require("../classes/UserData.js");
 const ImgManager = require("../classes/ImgManager.js");
 const getItemDataById = require("../utils/getItemDataById.js");
 
@@ -21,12 +20,15 @@ module.exports = {
 
     const itemId = interaction.options.getInteger("item_id");
     if (shop.includes(itemId)) {
-      const user = new UserData(interaction.user, interaction.guildId);
+      // TODO: get user from DB
+      // interaction.user.id
+      const user = null;
 
       const generalItemData = getItemDataById(itemId);
       if (generalItemData) {
         const itemPrice = generalItemData.price;
-       
+        
+        // TODO: check manual balance
         if (user.hasBalance(itemPrice)) {
           user.removeBalance(itemPrice);
           user.addItem(itemId);
