@@ -1,26 +1,8 @@
-const fs = require('fs');
-const path = require("path");
+
+const commandsReader = require("./commandsReader.js");
 
 module.exports = async function commandsRegister(client) {
-  // Загружаем команды из папки 'commands'
-  const commandFiles = fs
-    .readdirSync(path.join(__dirname, "../commands"))
-    .filter((file) => file.endsWith(".js"));
-
-  const commands = [];
-
-  for (const file of commandFiles) {
-    const command = require(path.join(__dirname, `../commands/${file}`));
-    client.commands.set(command.name, command);
-
-    // Добавляем команду в массив для регистрации
-    commands.push({
-      name: command.name,
-      description: command.description,
-      execute: command.execute,
-      options: command.options || [],
-    });
-  }
+  const { commands } = commandsReader();
   
   if (+process.env.IS_LOCAL) {
     return; // for tests

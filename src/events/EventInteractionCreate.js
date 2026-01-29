@@ -1,6 +1,7 @@
 const processingUsers = new Set();
+const commandsReader = require("../utils/commandsReader.js");
 
-module.exports = async function EventInteractionCreate(interaction, client) {
+module.exports = async function EventInteractionCreate(interaction) {  
   // direct message check
   if (!interaction.member) {
     return await interaction.reply("Не работает в личных собщениях");
@@ -16,7 +17,8 @@ module.exports = async function EventInteractionCreate(interaction, client) {
 
   // command
   if (interaction.isCommand()) {
-    const command = client.commands.get(interaction.commandName);
+    const { collection } = commandsReader();
+    const command = collection.get(interaction.commandName);
     if (!command) return;
 
     await command.execute(interaction);
