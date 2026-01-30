@@ -14,6 +14,15 @@ class UserRepo {
     await UserRepo.#createUserIfNotExists(user);
     await pool.execute(`UPDATE users SET balance = balance + 1 WHERE discord_id = ?`, [user.id]);
   }
+
+  static async getBalance(user) {
+    await UserRepo.#createUserIfNotExists(user);
+
+    const [result] = await pool.execute(`SELECT * FROM users WHERE discord_id = ?`, [user.id]);
+    const userData = result[0];
+
+    return userData.balance;
+  }
 };
 
 module.exports = UserRepo;
