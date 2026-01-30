@@ -23,6 +23,22 @@ class UserRepo {
 
     return userData.balance;
   }
+
+  static async getUserData(id) {
+    const [result] = await pool.execute(`SELECT * FROM users WHERE discord_id = ?`, [id]);
+    const userData = result[0];
+    userData.items = JSON.parse(userData.items);
+    return userData;
+  }
+  
+  static async removeBalance(user, amount) {
+    await pool.execute(`UPDATE users SET balance = balance - ? WHERE discord_id = ?`, [amount, user.discord_id]);
+  }
+
+  static async updateInventory(user) {
+    const inv = JSON.stringify(user.items);
+    await pool.execute(`UPDATE users SET items = ? WHERE discord_id = ?`, [inv, user.discord_id]);
+  }
 };
 
 module.exports = UserRepo;

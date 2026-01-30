@@ -2,6 +2,8 @@ const commandOptionTypes = require("../utils/commandOptionTypes.js");
 const {shop} = require("../data/itemsData.js");
 const ImgManager = require("../classes/ImgManager.js");
 const getItemDataById = require("../utils/getItemDataById.js");
+const UserRepo = require("../repository/UserRepo.js");
+const addItemToInventory = require("../utils/addItemToInventory.js");
 
 module.exports = {
   name: "buy",
@@ -20,18 +22,21 @@ module.exports = {
 
     const itemId = interaction.options.getInteger("item_id");
     if (shop.includes(itemId)) {
-      // TODO: get user from DB
-      // interaction.user.id
-      const user = null;
+      const user = await UserRepo.getUserData(interaction.user.id);
+      
+      if (!user) {
+        return await interaction.editReply(`У тебя нет манет`);
+      }
 
       const generalItemData = getItemDataById(itemId);
       if (generalItemData) {
         const itemPrice = generalItemData.price;
         
-        // TODO: check manual balance
-        if (user.hasBalance(itemPrice)) {
-          user.removeBalance(itemPrice);
-          user.addItem(itemId);
+        if (user.balance >= itemPrice) {
+          await UserRepo.removeBalance(user, itemPrice);
+          user.items = await addItemToInventory(user.items, itemId);
+          await UserRepo.updateInventory(user);
+
           let itemImgBuffer = await generalItemData.createImage();
           itemImgBuffer = await ImgManager.extend(itemImgBuffer, {top: 12, bottom: 11});
 
