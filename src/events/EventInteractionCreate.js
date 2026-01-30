@@ -3,8 +3,6 @@ const commandsReader = require("../utils/commandsReader.js");
 const processingUsers = new Set();
 
 module.exports = async function EventInteractionCreate(interaction) {  
-  console.log("[EVENT]: Interaction");
-  
   // direct message check
   if (!interaction.member) {
     return await interaction.reply("Не работает в личных собщениях");
