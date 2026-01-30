@@ -1,4 +1,4 @@
-
+// utils
 const commandsReader = require("./commandsReader.js");
 
 module.exports = async function commandsRegister(client) {

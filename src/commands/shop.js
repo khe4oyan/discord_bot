@@ -1,10 +1,14 @@
-const { shop } = require("../data/itemsData"); 
+// classes
 const ImgManager = require("../classes/ImgManager.js");
 const Item = require("../classes/Item.js");
+
+// utils
 const getItemDataById = require("../utils/getItemDataById.js");
 
-// shop is items index array
+// game data
+const { shop } = require("../data/itemsData"); 
 
+// shop is items index array
 module.exports = {
   name: "shop",
   description: "Показать какие предметы в продаже",

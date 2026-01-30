@@ -1,5 +1,7 @@
+// utils
 const commandsReader = require("../utils/commandsReader.js");
 
+// users processes
 const processingUsers = new Set();
 
 module.exports = async function EventInteractionCreate(interaction) {  

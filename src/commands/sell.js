@@ -1,6 +1,10 @@
+// repositories
 const UserRepo = require("../repository/UserRepo.js");
+
+// utils
 const commandOptionTypes = require("../utils/commandOptionTypes.js");
 const removeItemFromInventory = require("../utils/removeItemFromInventory.js");
+
 
 module.exports = {
   name: "sell",

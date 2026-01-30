@@ -1,8 +1,10 @@
-const Item = require("./Item");
+// libs
 const path = require("path");
+
+// classes
+const Item = require("./Item");
 const ImgManager = require("./ImgManager.js");
 
-// never expired
 class ItemUpgrade extends Item {
   isUpgradeable;
   upgrades;

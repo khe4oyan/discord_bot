@@ -1,3 +1,4 @@
+// utils
 const commandsRegister = require('../utils/commandsRegister.js');
 
 module.exports = async function EventClientReady(client) {

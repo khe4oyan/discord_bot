@@ -1,10 +1,19 @@
-const ImgManager = require("../classes/ImgManager.js");
-const commandOptionTypes = require("../utils/commandOptionTypes.js");
-const boxesData = require("../data/boxesData.js");
-const getItemDataById = require("../utils/getItemDataById.js");
+// libs
 const path = require("path");
+
+// classes
+const ImgManager = require("../classes/ImgManager.js");
+
+// repositories
 const UserRepo = require("../repository/UserRepo.js");
+
+// utils
+const commandOptionTypes = require("../utils/commandOptionTypes.js");
+const getItemDataById = require("../utils/getItemDataById.js");
 const addItemToInventory = require("../utils/addItemToInventory.js");
+
+// game data
+const boxesData = require("../data/boxesData.js");
 
 module.exports = {
   name: "open",

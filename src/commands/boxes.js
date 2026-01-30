@@ -1,4 +1,7 @@
+// classes
 const ImgManager = require("../classes/ImgManager.js");
+
+// game data
 const boxesData = require("../data/boxesData.js");
 
 module.exports = {

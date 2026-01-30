@@ -1,9 +1,16 @@
-const commandOptionTypes = require("../utils/commandOptionTypes.js");
-const {shop} = require("../data/itemsData.js");
+// classes
 const ImgManager = require("../classes/ImgManager.js");
-const getItemDataById = require("../utils/getItemDataById.js");
+
+// repositories
 const UserRepo = require("../repository/UserRepo.js");
+
+// utils
+const getItemDataById = require("../utils/getItemDataById.js");
+const commandOptionTypes = require("../utils/commandOptionTypes.js");
 const addItemToInventory = require("../utils/addItemToInventory.js");
+
+// game data
+const {shop} = require("../data/itemsData.js");
 
 module.exports = {
   name: "buy",

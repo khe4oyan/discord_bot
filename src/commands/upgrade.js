@@ -1,8 +1,15 @@
-const commandOptionTypes = require("../utils/commandOptionTypes");
-const ImgManager = require('../classes/ImgManager.js');
+// libs
 const path = require('path');
-const getItemDataById = require("../utils/getItemDataById");
+
+// classes
+const ImgManager = require('../classes/ImgManager.js');
+
+// repositories
 const UserRepo = require("../repository/UserRepo.js");
+
+// utils
+const commandOptionTypes = require("../utils/commandOptionTypes");
+const getItemDataById = require("../utils/getItemDataById");
 const removeItemCountById = require("../utils/removeItemCountById.js");
 
 module.exports = {

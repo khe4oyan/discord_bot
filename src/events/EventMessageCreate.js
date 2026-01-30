@@ -1,6 +1,7 @@
 // repo
 const UserRepo = require("../repository/UserRepo.js");
 
+// users processes
 const processingUsers = new Set();
 
 module.exports = async function EventMessageCreate(message) {

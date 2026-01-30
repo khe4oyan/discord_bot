@@ -1,3 +1,4 @@
+// game data
 const {items} = require("../data/itemsData");
 
 module.exports = function getItemDataById(itemId) {

@@ -1,5 +1,8 @@
-const itemsData = require("../data/itemsData");
+// repositories
 const UserRepo = require("../repository/UserRepo");
+
+// game data
+const itemsData = require("../data/itemsData");
 
 async function removeItemFromInventory(user, removingItemId) {
   const userInventory = user.items;

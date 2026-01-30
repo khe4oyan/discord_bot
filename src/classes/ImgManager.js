@@ -1,3 +1,4 @@
+// libs
 const { AttachmentBuilder } = require("discord.js");
 const sharp = require("sharp");
 

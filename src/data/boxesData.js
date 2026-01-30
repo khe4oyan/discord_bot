@@ -1,3 +1,4 @@
+// classes
 const Box = require("../classes/Box.js");
 
 const boxesData = {

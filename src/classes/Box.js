@@ -1,7 +1,12 @@
+// libs
+const path = require("path");
+
+// classes
 const ImgManager = require("./ImgManager.js");
 const Item = require("./Item.js");
+
+// utils
 const getItemDataById = require("../utils/getItemDataById.js");
-const path = require("path");
 
 class Box {
   id;
