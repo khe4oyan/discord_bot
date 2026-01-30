@@ -15,7 +15,7 @@ module.exports = async function EventMessageCreate(message) {
   if (message.author.bot) return;
 
   try {
-    await UserRepo.incrementBalance(message.author);
+    await UserRepo.addBalance(message.author, 1);
   } catch (error) {
     console.log("[CRITICAL ERROR]", error.message);
   }

@@ -3,6 +3,8 @@ const commandOptionTypes = require("../utils/commandOptionTypes.js");
 const boxesData = require("../data/boxesData.js");
 const getItemDataById = require("../utils/getItemDataById.js");
 const path = require("path");
+const UserRepo = require("../repository/UserRepo.js");
+const addItemToInventory = require("../utils/addItemToInventory.js");
 
 module.exports = {
   name: "open",
@@ -24,11 +26,14 @@ module.exports = {
     for (let i = 0; i < boxes.length; ++i) {
       if (boxes[i].id === boxNumber) {
         if (!boxes[i].isActive) { continue; }
-        // TODO: get userData by interaction.user.id
-        const userData = null;
+        const userData = await UserRepo.getUserData(interaction.user.id);
+        if (!userData) { 
+					return await interaction.editReply(`У тебя недостаточно денег чтобы открыть этот ящик`);
+        }
+
         const boxPrice = boxes[boxNumber].price;
         
-				if (!userData.hasBalance(boxPrice)) {
+				if (!userData.balance >= boxPrice) {
 					await interaction.editReply(`Этот ящик стоит ${boxPrice} монет.\nУ тебя ${userData.balance} монет (не хватает  ${boxPrice - userData.balance}).`);
         } else {
           const box = boxes[boxNumber];
@@ -48,7 +53,9 @@ async function openBox(interaction, openBoxData, userData) {
 
   const generalItemData = getItemDataById(itemId);
   if (generalItemData) {
-    userData.addItemAndRemoveBalance(openBoxData.price, itemId);
+    await UserRepo.removeBalance(userData, openBoxData.price);
+    userData.items = await addItemToInventory(userData.items, itemId);
+    await UserRepo.updateInventory(userData);
   
     let imgBuffer = await ImgManager.extend(await generalItemData.createImage(), {top: 12, bottom: 11});
 

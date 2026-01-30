@@ -10,9 +10,9 @@ class UserRepo {
     );
   }
 
-  static async incrementBalance(user) {
+  static async addBalance(user, amount) {
     await UserRepo.#createUserIfNotExists(user);
-    await pool.execute(`UPDATE users SET balance = balance + 1 WHERE discord_id = ?`, [user.id]);
+    await pool.execute(`UPDATE users SET balance = balance + ? WHERE discord_id = ?`, [amount, user.id]);
   }
 
   static async getBalance(user) {
