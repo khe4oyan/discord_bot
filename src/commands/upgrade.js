@@ -82,9 +82,7 @@ module.exports = {
     const beforeUpgradeItemBuffer = await globalItemDate.createImage(userInv[itemInd][2]); 
     // const beforeUpgradeItemMeta = await ImgManager.loadImg(beforeUpgradeItemBuffer).metadata();
 
-    console.log(user.items[itemInd][2]);
     ++user.items[itemInd][2];
-    console.log(user.items[itemInd][2]);
     
     await UserRepo.updateInventory(user);
 
