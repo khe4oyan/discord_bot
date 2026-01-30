@@ -2,7 +2,6 @@ const pool = require("../config/pool.js");
 
 class UserRepo {
   static async #createUserIfNotExists(user) {
-    console.log("CHECK user exists", user.discord_id);
     try {
       await pool.execute(`
         INSERT IGNORE 
@@ -42,7 +41,6 @@ class UserRepo {
   
   static async removeBalance(user, amount) {
     await UserRepo.#createUserIfNotExists(user);
-    console.log(user);
     await pool.execute(`UPDATE users SET balance = balance - ? WHERE discord_id = ?`, [amount, user.discord_id]);
   }
 

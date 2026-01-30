@@ -2,6 +2,8 @@ const commandOptionTypes = require("../utils/commandOptionTypes");
 const ImgManager = require('../classes/ImgManager.js');
 const path = require('path');
 const getItemDataById = require("../utils/getItemDataById");
+const UserRepo = require("../repository/UserRepo.js");
+const removeItemCountById = require("../utils/removeItemCountById.js");
 
 module.exports = {
   name: "upgrade",
@@ -18,9 +20,14 @@ module.exports = {
   async execute(interaction) {
     await interaction.deferReply();
     const upgradableItemId = interaction.options.getInteger("item_id");
-    // TODO: get user data
-    const user = null;
-    const userInv = user.inventory;
+
+    const user = await UserRepo.getUserData(interaction.user.id);
+
+    if (!user) {
+      return await interaction.editReply("У тебя нет предмета чтобы улучшить");
+    }
+
+    const userInv = user.items;
 
     // ищем индекс улучшаемого предмета в инвентаре
     let itemInd = -1;
@@ -50,19 +57,20 @@ module.exports = {
     
     // попытка удалить предмет для прокачки
     const {upgradeItemId, upgradeItemCount} = globalItemDate.upgrades[userInv[itemInd][2]];
-    {
-      const result = user.removeItemCountById(upgradeItemId, upgradeItemCount);
-      if (!result) {
-        const upgradeItemData = getItemDataById(upgradeItemId);
-        
-        let resultText = `Недостаточно фрагментов для улучшения.\n`;
-        resultText += `Для следующего уровня нужно ${upgradeItemCount} шт. этого предмета.\n`;
-        resultText += `### ${upgradeItemData.name} (ID: ${upgradeItemId})\n`;
-        
-        const upgradeItemImg = await upgradeItemData.createAttachment();
-        return await interaction.editReply({content: resultText, files: [upgradeItemImg]});
-      }
+    const { isItemValid, newInv } = removeItemCountById(user, upgradeItemId, upgradeItemCount);
+
+    if (!isItemValid) {
+      const upgradeItemData = getItemDataById(upgradeItemId);
+      
+      let resultText = `Недостаточно фрагментов для улучшения.\n`;
+      resultText += `Для следующего уровня нужно ${upgradeItemCount} шт. этого предмета.\n`;
+      resultText += `### ${upgradeItemData.name} (ID: ${upgradeItemId})\n`;
+      
+      const upgradeItemImg = await upgradeItemData.createAttachment();
+      return await interaction.editReply({content: resultText, files: [upgradeItemImg]});
     }
+
+    user.items = newInv;
 
     // улучшение предмета
   
@@ -74,7 +82,11 @@ module.exports = {
     const beforeUpgradeItemBuffer = await globalItemDate.createImage(userInv[itemInd][2]); 
     // const beforeUpgradeItemMeta = await ImgManager.loadImg(beforeUpgradeItemBuffer).metadata();
 
-    user.upgradeItemByInd(itemInd);
+    console.log(user.items[itemInd][2]);
+    ++user.items[itemInd][2];
+    console.log(user.items[itemInd][2]);
+    
+    await UserRepo.updateInventory(user);
 
     // изображение предмета после улучшения
     const afterUpgradeItemBuffer = await globalItemDate.createImage(userInv[itemInd][2]); 

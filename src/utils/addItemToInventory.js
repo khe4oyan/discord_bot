@@ -5,8 +5,6 @@ const Item = require("../classes/Item");
 const itemsData = require("../data/itemsData");
 
 async function addItemToInventory(inventory, itemId) {
-  console.log(inventory);
-  
   let isNewItem = true;
   const qualities = Item.quality;
 
@@ -60,9 +58,6 @@ async function addItemToInventory(inventory, itemId) {
   for (let i = 0; i < keys.length; ++i) {
     inventory.push(...qualityArrays[keys[i]]);
   }
-
-  console.log(inventory);
-  
 
   return inventory;
 }
