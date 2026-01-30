@@ -1,15 +1,20 @@
+// classes
 const ImgManager = require("../classes/ImgManager.js");
+const UserRepo = require("../repository/UserRepo.js");
+
+// utils
+const createInvImage = require("../utils/createInvImage.js");
 
 module.exports = {
 	name: 'inv',
 	description: 'Показать инвентарь',
 	async execute(interaction) {
 		await interaction.deferReply();
-		// TODO: get inventory by interaction.user.id
-		const user = null;
+		const user = await UserRepo.getUserData(interaction.user.id);
 
-		if (user.inventory.length > 0) {
-			const invImage = await user.createInvImage();
+		if (user.items.length > 0) {
+			const invImage = await createInvImage(user.items);
+
 			if (invImage) {
 				const attachment = ImgManager.createAttachmentDiscord(invImage);
 				await interaction.editReply({ content: "## Инвентарь \n-# /sell [id] - чтобы продать предмет", files: [attachment]});
