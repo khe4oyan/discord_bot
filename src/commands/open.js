@@ -33,11 +33,11 @@ module.exports = {
 
         const boxPrice = boxes[boxNumber].price;
         
-				if (!userData.balance >= boxPrice) {
-					await interaction.editReply(`Этот ящик стоит ${boxPrice} монет.\nУ тебя ${userData.balance} монет (не хватает  ${boxPrice - userData.balance}).`);
-        } else {
+				if (userData.balance >= boxPrice) {
           const box = boxes[boxNumber];
           await openBox(interaction, box, userData);
+        } else {
+					await interaction.editReply(`Этот ящик стоит ${boxPrice} монет.\nУ тебя ${userData.balance} монет (не хватает  ${boxPrice - userData.balance}).`);
         }
 
         return;

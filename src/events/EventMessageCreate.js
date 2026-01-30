@@ -15,9 +15,11 @@ module.exports = async function EventMessageCreate(message) {
   if (message.author.bot) return;
 
   try {
-    await UserRepo.addBalance(message.author, 1);
+    const user = {...message.author};
+    user.discord_id = message.author.id;
+    await UserRepo.addBalance(user, 1);
   } catch (error) {
-    console.log("[CRITICAL ERROR]", error.message);
+    console.log("[CRITICAL ERROR]", error.message, error.stack);
   }
   
   processingUsers.delete(userId);

@@ -1,3 +1,6 @@
+// lib
+const path = require("path");
+
 // classes
 const ImgManager = require("../classes/ImgManager.js");
 const Item = require("../classes/Item.js");

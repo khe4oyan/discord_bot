@@ -28,7 +28,7 @@ module.exports = async function EventInteractionCreate(interaction) {
       await command.execute(interaction);
     } catch (error) {
       interaction.editReply({ content: "(Произошла какая-то ошибка)", ephemeral: true });
-      console.log("[CRITYCAL ERROR]", error.message);      
+      console.log("[CRITYCAL ERROR]", error.message, error.stack);      
     }
   }else if (interaction.isButton()) {
     console.log("[Interaction:button]");
